@@ -84,7 +84,7 @@ Web (FleetManagement.Web)
 | .NET             | 9.0     | Runtime          |
 | ASP.NET Core     | 9.0     | Web Framework    |
 | EF Core          | 9.x     | ORM              |
-| AutoMapper       | 12.x    | Object Mapping   |
+| AutoMapper       | 15.x    | Object Mapping   |
 | FluentValidation | 12.x    | Input Validation |
 | Serilog          | Latest  | Logging          |
 | Newtonsoft.Json  | Latest  | JSON Processing  |
