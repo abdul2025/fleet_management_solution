@@ -15,10 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FleetManagement.Shared", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FleetManagement.Web", "src\FleetManagement.Web\FleetManagement.Web.csproj", "{8CBB2CE8-B9F0-43E9-B049-7C2FD6C2CAFB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0AB3BF05-4346-4AA6-1389-037BE0695223}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FleetManagement.UnitTests", "tests\FleetManagement.UnitTests\FleetManagement.UnitTests.csproj", "{D63FC242-379C-4E62-8476-4A7ED2DDB773}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,18 +85,6 @@ Global
 		{8CBB2CE8-B9F0-43E9-B049-7C2FD6C2CAFB}.Release|x64.Build.0 = Release|Any CPU
 		{8CBB2CE8-B9F0-43E9-B049-7C2FD6C2CAFB}.Release|x86.ActiveCfg = Release|Any CPU
 		{8CBB2CE8-B9F0-43E9-B049-7C2FD6C2CAFB}.Release|x86.Build.0 = Release|Any CPU
-		{D63FC242-379C-4E62-8476-4A7ED2DDB773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D63FC242-379C-4E62-8476-4A7ED2DDB773}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D63FC242-379C-4E62-8476-4A7ED2DDB773}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D63FC242-379C-4E62-8476-4A7ED2DDB773}.Debug|x64.Build.0 = Debug|Any CPU
-		{D63FC242-379C-4E62-8476-4A7ED2DDB773}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D63FC242-379C-4E62-8476-4A7ED2DDB773}.Debug|x86.Build.0 = Debug|Any CPU
-		{D63FC242-379C-4E62-8476-4A7ED2DDB773}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D63FC242-379C-4E62-8476-4A7ED2DDB773}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D63FC242-379C-4E62-8476-4A7ED2DDB773}.Release|x64.ActiveCfg = Release|Any CPU
-		{D63FC242-379C-4E62-8476-4A7ED2DDB773}.Release|x64.Build.0 = Release|Any CPU
-		{D63FC242-379C-4E62-8476-4A7ED2DDB773}.Release|x86.ActiveCfg = Release|Any CPU
-		{D63FC242-379C-4E62-8476-4A7ED2DDB773}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,6 +95,5 @@ Global
 		{E068BC19-555C-49FE-86CC-2B1AF3FD9269} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{8F0EAD87-DC51-4362-B62C-19F2E0D854DD} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{8CBB2CE8-B9F0-43E9-B049-7C2FD6C2CAFB} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
-		{D63FC242-379C-4E62-8476-4A7ED2DDB773} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
 	EndGlobalSection
 EndGlobal
