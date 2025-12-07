@@ -31,22 +31,24 @@ namespace FleetManagement.Data.Configurations
                 .HasMaxLength(100)
                 .IsRequired();
 
-            // Manufacturer - Optional, Max 100 characters
+            // Manufacturer - Convert enum to string, NOT NULL (has default value)
             builder.Property(a => a.Manufacturer)
+                .HasConversion<int>()
                 .HasColumnName("manufacturer")
-                .HasMaxLength(100)
-                .IsRequired(false);
+                .HasMaxLength(100) // Add max length for string storage
+                .IsRequired();
 
             // YearOfManufacture - Optional integer
             builder.Property(a => a.YearOfManufacture)
                 .HasColumnName("year_of_manufacture")
                 .IsRequired(false);
 
-            // Status - Optional, Max 50 characters
+            // Status - Convert enum to string, NOT NULL (has default value)
             builder.Property(a => a.Status)
+                .HasConversion<int>()
                 .HasColumnName("status")
                 .HasMaxLength(50)
-                .IsRequired(false);
+                .IsRequired();
 
             // Additional Indexes (optional but recommended)
             builder.HasIndex(a => a.Status)
@@ -55,7 +57,9 @@ namespace FleetManagement.Data.Configurations
             builder.HasIndex(a => a.Model)
                 .HasDatabaseName("ix_aircrafts_model");
 
-
+            // Optional: Consider indexing manufacturer if frequently queried
+            builder.HasIndex(a => a.Manufacturer)
+                .HasDatabaseName("ix_aircrafts_manufacturer");
         }
     }
 }

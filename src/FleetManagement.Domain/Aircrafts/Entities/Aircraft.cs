@@ -1,15 +1,15 @@
 using FleetManagement.Domain.CommonEntities;
+using FleetManagement.Shared.Enums;
 
 namespace FleetManagement.Domain.Aircrafts.Entities
 {
     public class Aircraft : BaseEntity
     {
-        public string RegistrationNumber { get; set; } = string.Empty;
-        public string Model { get; set; } = string.Empty;
-        public string? Manufacturer { get; set; }
+        public required string RegistrationNumber { get; set; }
+        public required string Model { get; set; }
+        public AircraftManufacturers Manufacturer { get; set; } = AircraftManufacturers.Boeing;
         public int? YearOfManufacture { get; set; }
-        public string? Status { get; set; }
-
+        public AircraftStatus Status { get; set; } = AircraftStatus.Active;
 
         // Navigation Properties TODO: Uncomment and implement related entities
         // public ICollection<Component> Components { get; set; } = new List<Component>();
