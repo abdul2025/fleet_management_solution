@@ -1,6 +1,7 @@
 
 
 using FleetManagement.Infrastructure.Data;
+using FleetManagement.Infrastructure.Data.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,12 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Configure PostgreSQL Database
-builder.Services.AddDbContext<FleetManagement.Infrastructure.Data.ApplicationDbContext>(options =>
+
+
+// Configure PostgreSQL Database with interceptor
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        b => b.MigrationsAssembly("FleetManagement.Infrastructure")  // or your Infrastructure project name
-    ));
+            builder.Configuration.GetConnectionString("DefaultConnection"),
+            b => b.MigrationsAssembly("FleetManagement.Infrastructure")
+        )
+        .AddInterceptors(new BaseEntityInterceptor()) // <-- register interceptor here
+);
 
 var app = builder.Build();
 
