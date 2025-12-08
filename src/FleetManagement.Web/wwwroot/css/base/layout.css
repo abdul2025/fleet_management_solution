@@ -1,0 +1,71 @@
+/* Buttons */
+.btn {
+    border-radius: var(--radius);
+    font-weight: 500;
+    padding: 0.55rem 1.2rem;
+    transition: var(--transition);
+}
+
+.btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.btn-outline-primary {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary);
+    color: #fff;
+}
+
+/* Cards / Panels */
+.card, .content-card, .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: var(--transition);
+}
+
+.card:hover, .content-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+}
+
+/* Forms */
+.form-control {
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.75rem;
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--text);
+}
+
+/* Tables */
+.table {
+    border-color: var(--border);
+}
+
+.table thead {
+    background: var(--bg);
+}
+
+.table tbody tr:hover {
+    background: var(--accent + "22"); /* light accent overlay */
+}

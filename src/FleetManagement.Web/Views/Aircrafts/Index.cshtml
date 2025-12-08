@@ -1,0 +1,210 @@
+﻿@{
+    Layout = "_AircraftsLayout";
+    ViewData["Title"] = "Dashboard";
+
+}
+
+
+    
+
+
+    <!-- Toggle Button -->
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fa-solid fa-xmark toggle-icon"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">
+            <i class="fa-solid fa-plane"></i> Fleet
+        </div>
+    </div>
+
+    <nav class="sidebar-menu">
+        <a href="#" class="menu-item active">
+            <i class="fa-solid fa-jet-fighter"></i>
+            <span>Aircrafts</span>
+        </a>
+        <a href="#" class="menu-item">
+            <i class="fa-solid fa-gears"></i>
+            <span>Components</span>
+            <span class="menu-badge">12</span>
+        </a>
+        <a href="#" class="menu-item">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+            <span>Maintenance Events</span>
+        </a>
+        <a href="#" class="menu-item">
+            <i class="fa-solid fa-clipboard-list"></i>
+            <span>Task Card</span>
+        </a>
+        <div class="menu-divider"></div>
+
+        <a href="#" class="menu-item">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            <span>Inventory Item</span>
+        </a>
+        <a href="#" class="menu-item">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Insurance Policy</span>
+            <span class="menu-badge">5</span>
+        </a>
+        <a href="#" class="menu-item">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+            <span>Insurance Claim</span>
+        </a>
+        <a href="#" class="menu-item">
+            <i class="fa-solid fa-file-contract"></i>
+            <span>Lease Contract</span>
+        </a>
+        <div class="menu-divider"></div>
+        <a href="#" class="menu-item">
+            <i class="fa-solid fa-folder-open"></i>
+            <span>Documents Control</span>
+        </a>
+    </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="container-fluid">
+            <div class="row"> 
+                <div class="col-12">
+                    <div class="content-card text-center">
+                        <h2>Welcome to Your Fleet Management System</h2>
+                        <p class="mt-2">
+                            Manage your aircraft, scheduling, maintenance, and operations efficiently — all in one place.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="content-card">
+                        <h2>Responsive Design</h2>
+                        <p>The sidebar automatically adapts to different screen sizes. On desktop, it shifts the content. On tablets and mobile devices, it overlays the content for better space utilization.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="content-card">
+                        <h2>Professional Aesthetics</h2>
+                        <p>Features include Font Awesome icons, a clean color scheme, professional typography, subtle animations, and a cohesive design system that creates a polished, business-ready interface.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="content-card">
+                        <h2>Key Features</h2>
+                        <p>
+                            ✓ Font Awesome 6.5 icons throughout<br>
+                            ✓ Smooth toggle animations<br>
+                            ✓ Clean, professional design<br>
+                            ✓ Fully responsive for all standard screen sizes<br>
+                            ✓ Badge notifications on menu items<br>
+                            ✓ Optimized CSS transitions<br>
+                            ✓ Active state indicators<br>
+                            ✓ Subtle hover effects
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JavaScript -->
+<script>
+    // Sidebar Toggle Functionality
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    const toggleIcon = sidebarToggle.querySelector('.toggle-icon');
+
+
+
+
+    let sidebarOpen = true;
+
+    // Toggle Sidebar
+    function toggleSidebar() {
+        sidebarOpen = !sidebarOpen;
+
+        sidebar.classList.toggle('closed', !sidebarOpen);
+        sidebarToggle.classList.toggle('open', sidebarOpen);
+
+        toggleIcon.classList.toggle('fa-bars', !sidebarOpen);
+        toggleIcon.classList.toggle('fa-xmark', sidebarOpen);
+
+        if (window.innerWidth > 992) {
+            mainContent.classList.toggle('shifted', sidebarOpen);
+            sidebarToggle.classList.toggle('shifted', sidebarOpen);
+        } else {
+            mainContent.classList.remove('shifted');
+            sidebarToggle.classList.remove('shifted');
+        }
+    }
+
+    sidebarToggle.addEventListener('click', toggleSidebar);
+
+    // Handle Window Resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth <= 992) {
+            mainContent.classList.remove('shifted');
+            sidebarToggle.classList.remove('shifted');
+        } else if (sidebarOpen) {
+            mainContent.classList.add('shifted');
+            sidebarToggle.classList.add('shifted');
+        }
+    });
+
+    // Active Menu Item
+    const menuItems = document.querySelectorAll('.menu-item');
+
+    menuItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            menuItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+
+            // Close sidebar on mobile after clicking
+            if (window.innerWidth <= 768) {
+                setTimeout(() => {
+                    sidebar.classList.add('closed');
+                    sidebarToggle.classList.remove('open');
+                    toggleIcon.classList.remove('fa-xmark');
+                    toggleIcon.classList.add('fa-bars');
+                    sidebarOpen = false;
+                }, 300);
+            }
+        });
+    });
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768 && sidebarOpen) {
+            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                sidebar.classList.add('closed');
+                sidebarToggle.classList.remove('open');
+                toggleIcon.classList.remove('fa-xmark');
+                toggleIcon.classList.add('fa-bars');
+                sidebarOpen = false;
+            }
+        }
+    });
+
+    // Initialize on page load
+    if (window.innerWidth > 992 && sidebarOpen) {
+        mainContent.classList.add('shifted');
+        sidebarToggle.classList.add('shifted');
+        sidebarToggle.classList.add('open');
+    }
+
+</script>

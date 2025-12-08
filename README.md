@@ -1,137 +1,338 @@
 # Fleet Management Solution
 
-## Overview
+A modular .NET 9 solution implementing a comprehensive fleet and aircraft management system. Built with a clean, layered architecture following Domain-Driven Design principles.
 
-FleetManagement is a **.NET 9 MVC Web application** following **Clean Architecture**, with clear separation of concerns and layered design.
+## 📋 Table of Contents
 
----
+- [Overview](#overview)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [Database Migrations](#database-migrations)
+- [Project Structure](#project-structure)
+- [Development](#development)
+- [Contributing](#contributing)
 
-## Architecture
+## 🚀 Overview
+
+The Fleet Management Solution is a enterprise-grade application designed to manage fleets and aircraft operations. The system follows clean architecture principles with clear separation of concerns across multiple layers, ensuring maintainability, scalability, and testability.
+
+## 🏗️ Architecture
+
+This solution follows a **layered architecture** pattern with the following projects:
+
+### Solution Structure
 
 ```
-Web (FleetManagement.Web)
-│
-├─ Controllers / Middleware / Filters
-│
-├─ Application Layer (FleetManagement.Application)
-│   ├─ Entities, Enums, Events, Exceptions
-│   ├─ Interfaces, Specifications, ValueObjects
-│
-├─ Infrastructure (FleetManagement.Infrastructure)
-│   ├─ Repositories, Data, Migrations
-│   ├─ External Services, Background Jobs
-│
-├─ Domain Layer (FleetManagement.Domain)
-│   ├─ Core business rules and entities
-│
-└─ Shared Layer (FleetManagement.Shared)
-    ├─ Constants, Extensions, Helpers, Resources
+FleetManagement.sln
+├── src/
+│   ├── FleetManagement.Domain/          # Domain entities and value objects
+│   ├── FleetManagement.Application/     # Application services, commands/queries, DTOs
+│   ├── FleetManagement.Infrastructure/  # EF Core DbContext, repositories, migrations
+│   ├── FleetManagement.Shared/          # Shared helpers, constants, and enums
+│   └── FleetManagement.Web/             # ASP.NET Core MVC web frontend
 ```
 
-> **Rule:** Inner layers never depend on outer layers.
+### Layer Responsibilities
 
----
+- **Domain Layer**: Core business entities, value objects, and domain logic
+- **Application Layer**: Use cases, commands, queries, DTOs, and application service interfaces
+- **Infrastructure Layer**: Data access implementation using EF Core, repositories, and external services
+- **Shared Layer**: Cross-cutting concerns, utilities, constants, and enums
+- **Web Layer**: MVC controllers, views, static assets, and application entry point
 
-## Project Structure
+## 🛠️ Tech Stack
 
-### 1️⃣ Domain Layer (`FleetManagement.Domain`)
+- **Framework**: .NET 9.0
+- **ORM**: Entity Framework Core 9.x
+- **Database**: PostgreSQL (via Npgsql.EntityFrameworkCore.PostgreSQL)
+- **Web Framework**: ASP.NET Core MVC
+- **Architecture Pattern**: Clean Architecture / Layered Architecture
+- **Design Pattern**: Domain-Driven Design (DDD)
 
-* **Purpose:** Core business entities and rules
-* **Dependencies:** None (pure domain)
-* **Contents:** Entities, ValueObjects, Enums, Events, Exceptions
+### Key Features
 
-### 2️⃣ Application Layer (`FleetManagement.Application`)
+- **Entity Framework Core** with PostgreSQL provider
+- **Migration Management** in Infrastructure layer
+- **Interceptors** for cross-cutting concerns (BaseEntityInterceptor)
+- **Auto-migration** on startup (configurable)
+- **Dependency Injection** throughout the application
 
-* **Purpose:** Application services and business logic
-* **Dependencies:** Domain, Shared
-* **NuGet:** AutoMapper, FluentValidation
-* **Contents:** Entities, Events, Interfaces, Specifications, ValueObjects
+## 🏁 Getting Started
 
-### 3️⃣ Infrastructure Layer (`FleetManagement.Infrastructure`)
+### Prerequisites
 
-* **Purpose:** Data access, external services, background jobs
-* **Dependencies:** Application, Domain, Shared
-* **NuGet:** EF Core Tools
-* **Contents:** Data (Configurations & Migrations), Repositories, ExternalServices, BackgroundJobs
+Before you begin, ensure you have the following installed:
 
-### 4️⃣ Shared Layer (`FleetManagement.Shared`)
+- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
+- [PostgreSQL](https://www.postgresql.org/download/) (or use Docker)
+- A code editor ([Visual Studio 2022](https://visualstudio.microsoft.com/), [Rider](https://www.jetbrains.com/rider/), or [VS Code](https://code.visualstudio.com/))
 
-* **Purpose:** Cross-cutting utilities
-* **NuGet:** EF Core Design (v9), Newtonsoft.Json
-* **Contents:** Constants, Extensions, Helpers, Resources
+### Installation
 
-### 5️⃣ Web Layer (`FleetManagement.Web`)
+1. **Clone the repository**
 
-* **Purpose:** MVC presentation layer
-* **Dependencies:** Application, Infrastructure, Shared
-* **NuGet:** Serilog, AutoMapper, EF Core Design
-* **Contents:** Controllers, Middleware, Filters, Models, Views, Program.cs, appsettings.json
+   ```bash
+   git clone https://github.com/abdul2025/fleet_management_solution.git
+   cd fleet_management_solution
+   ```
 
----
+2. **Checkout the dev branch**
 
-## Test Projects
+   ```bash
+   git checkout dev
+   ```
 
-* **UnitTests:** Test components in isolation 🧪
-* **IntegrationTests:** Test multiple components together 🧪
-* **FunctionalTests:** End-to-end user workflow tests 🧪
+3. **Restore dependencies**
 
----
+   ```bash
+   dotnet restore
+   ```
 
-## Technology Stack
+4. **Build the solution**
 
-| Component        | Version | Purpose          |
-| ---------------- | ------- | ---------------- |
-| .NET             | 9.0     | Runtime          |
-| ASP.NET Core     | 9.0     | Web Framework    |
-| EF Core          | 9.x     | ORM              |
-| AutoMapper       | 12.x    | Object Mapping   |
-| FluentValidation | 12.x    | Input Validation |
-| Serilog          | Latest  | Logging          |
-| Newtonsoft.Json  | Latest  | JSON Processing  |
+   ```bash
+   dotnet build -c Debug
+   ```
 
----
+### Database Configuration
 
-## Key Principles
+Configure your PostgreSQL connection string in one of the following ways:
 
-* **Clean Architecture:** Separation of concerns, testable, framework-independent
-* **Dependency Flow:**
-  `Web → Application → Domain + Shared`
-* **Patterns Used:** Repository, Specification, Event Sourcing, Middleware, Filters, Dependency Injection
+#### Option 1: Using appsettings.json
 
----
+Edit `src/FleetManagement.Web/appsettings.json`:
 
-## Startup & Configuration
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5432;Database=fleetdb;Username=postgres;Password=postgres"
+  }
+}
+```
 
-* **Entry Point:** `/Program.cs` (Web)
-* **Config Files:** `appsettings.json`, `appsettings.Development.json`
-* **Dependency Injection:** Built-in ASP.NET Core IoC
-* **Logging:** Serilog (console + file)
+#### Option 2: Using Environment Variables
 
----
+**macOS/Linux (bash/zsh):**
+```bash
+export ConnectionStrings__DefaultConnection="Host=localhost;Port=5432;Database=fleetdb;Username=postgres;Password=postgres"
+```
 
-## Build & Run
+**Windows (PowerShell):**
+```powershell
+$env:ConnectionStrings__DefaultConnection="Host=localhost;Port=5432;Database=fleetdb;Username=postgres;Password=postgres"
+```
+
+**Windows (CMD):**
+```cmd
+set ConnectionStrings__DefaultConnection=Host=localhost;Port=5432;Database=fleetdb;Username=postgres;Password=postgres
+```
+
+#### Option 3: Using Docker for PostgreSQL
 
 ```bash
-# Navigate to Web project
-cd src/FleetManagement.Web
-
-# Restore dependencies
-dotnet restore
-
-# Build
-dotnet build
-
-# Run
-dotnet run
+docker run --name fleet-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=fleetdb -p 5432:5432 -d postgres:latest
 ```
 
-> App runs on `http://localhost:5000` (default)
+### Running the Application
+
+From the repository root:
+
+```bash
+dotnet run --project src/FleetManagement.Web -c Debug
+```
+
+Or using Visual Studio/Rider:
+1. Open `FleetManagement.sln`
+2. Set `FleetManagement.Web` as the startup project
+3. Press F5 to run
+
+The application will be available at `https://localhost:5001` (or `http://localhost:5000`)
+
+## 🗄️ Database Migrations
+
+The project uses Entity Framework Core migrations, which are stored in the `FleetManagement.Infrastructure` project.
+
+### Add a New Migration
+
+```bash
+dotnet ef migrations add <MigrationName> \
+  --project src/FleetManagement.Infrastructure \
+  --startup-project src/FleetManagement.Web \
+  --output-dir Data/Migrations
+```
+
+Example:
+```bash
+dotnet ef migrations add AddAircraftTable \
+  --project src/FleetManagement.Infrastructure \
+  --startup-project src/FleetManagement.Web \
+  --output-dir Data/Migrations
+```
+
+### Apply Migrations
+
+```bash
+dotnet ef database update \
+  --project src/FleetManagement.Infrastructure \
+  --startup-project src/FleetManagement.Web
+```
+
+### Remove Last Migration
+
+```bash
+dotnet ef migrations remove \
+  --project src/FleetManagement.Infrastructure \
+  --startup-project src/FleetManagement.Web
+```
+
+### List All Migrations
+
+```bash
+dotnet ef migrations list \
+  --project src/FleetManagement.Infrastructure \
+  --startup-project src/FleetManagement.Web
+```
+
+### Auto-Migration on Startup
+
+> ⚠️ **Note**: The application may include code in `Program.cs` to automatically apply pending migrations on startup. Use this feature carefully in production environments.
+
+## 📁 Project Structure
+
+### FleetManagement.Domain
+
+Contains the core business logic and domain entities:
+- **Entities**: Core business objects (e.g., `Aircraft`, `Fleet`)
+- **Value Objects**: Immutable objects defined by their attributes
+- **Domain Events**: Events that represent business occurrences
+- **Interfaces**: Domain service contracts
+
+### FleetManagement.Application
+
+Contains application-specific business logic:
+- **Commands**: Write operations (CQRS pattern)
+- **Queries**: Read operations (CQRS pattern)
+- **DTOs**: Data Transfer Objects for layer communication
+- **Interfaces**: Application service contracts
+- **Mappings**: Object mapping configurations
+
+### FleetManagement.Infrastructure
+
+Contains infrastructure concerns and external dependencies:
+- **Data/ApplicationDbContext.cs**: EF Core database context
+- **Data/Migrations/**: EF Core migration files
+- **Repositories**: Data access implementations
+- **Interceptors**: `BaseEntityInterceptor` for entity lifecycle management
+- **Configurations**: EF Core entity configurations
+
+### FleetManagement.Shared
+
+Contains shared utilities and cross-cutting concerns:
+- **Constants**: Application-wide constant values
+- **Enums**: Shared enumeration types
+- **Helpers**: Utility classes and extension methods
+
+### FleetManagement.Web
+
+Contains the web presentation layer:
+- **Controllers**: MVC controllers
+- **Views**: Razor views
+- **wwwroot**: Static files (CSS, JavaScript, images)
+- **Program.cs**: Application entry point and configuration
+
+## 💻 Development
+
+### Code Structure & Conventions
+
+- **Migrations Assembly**: Configured in `Program.cs` with `MigrationsAssembly("FleetManagement.Infrastructure")`
+- **Interceptors**: `BaseEntityInterceptor` is registered in both DI container and DbContext configuration
+- **Seeding**: Placeholder in `Program.cs` for initial data seeding (implement `SeedData.Initialize` if needed)
+
+### Development Tips
+
+1. **Keep Layers Separate**: Respect the dependency flow: Web → Application → Domain
+2. **Entity Configuration**: Define EF Core configurations in `Infrastructure/Data/Configurations`
+3. **Use DTOs**: Never expose domain entities directly to the presentation layer
+4. **Follow CQRS**: Separate commands (writes) from queries (reads) in the Application layer
+
+### Code Formatting
+
+Run code formatting:
+```bash
+dotnet format
+```
+
+### Build in Release Mode
+
+```bash
+dotnet build -c Release
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these guidelines:
+
+### Branching Strategy
+
+- Main branch: `main` (stable releases)
+- Development branch: `dev` (active development)
+- Feature branches: `feature/<feature-name>` (branched from `dev`)
+- Bugfix branches: `bugfix/<bug-name>` (branched from `dev`)
+
+### Workflow
+
+1. Fork the repository
+2. Create a feature branch from `dev`
+   ```bash
+   git checkout dev
+   git pull origin dev
+   git checkout -b feature/your-feature-name
+   ```
+3. Make your changes and commit with clear messages
+   ```bash
+   git commit -m "Add: Brief description of your changes"
+   ```
+4. Push to your fork
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+5. Open a Pull Request targeting the `dev` branch
+
+### Commit Message Guidelines
+
+- `Add:` for new features
+- `Fix:` for bug fixes
+- `Update:` for updates to existing features
+- `Refactor:` for code refactoring
+- `Docs:` for documentation changes
+
+### Code Review
+
+All pull requests require review before merging. Please ensure:
+- Code follows project conventions
+- All tests pass (if applicable)
+- Documentation is updated
+- Migrations are included if schema changes
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## 👤 Contact
+
+**Repository Owner**: [@abdul2025](https://github.com/abdul2025)
+
+For questions, issues, or suggestions:
+- Open an issue on GitHub
+- Create a pull request with improvements
+
+## 🙏 Acknowledgments
+
+Built with modern .NET technologies and best practices for enterprise application development.
 
 ---
 
-## Notes
+**Status**: Active Development (dev branch)
 
-* Domain layer has **no external dependencies**
-* Infrastructure layer contains **all external integrations**
-* Web layer handles **HTTP and UI concerns only**
-* Application layer contains **business logic and workflows**
+Last Updated: December 2024

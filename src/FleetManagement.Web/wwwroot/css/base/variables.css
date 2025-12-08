@@ -1,0 +1,25 @@
+/* Light Mode */
+:root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --border: #e4e7eb;
+    --text: #1a1f36;
+    --text-light: #6b7280;
+    --primary: #0f766e;
+    --primary-dark: #115e59;
+    --accent: #06b6d4;
+    --radius: 10px;
+    --transition: 0.25s ease;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    --bg: #121212;
+    --surface: #1f1f1f;
+    --border: #2c2c2c;
+    --text: #e0e0e0;
+    --text-light: #a0a0a0;
+    --primary: #0f766e;
+    --primary-dark: #115e59;
+    --accent: #06b6d4;
+}
