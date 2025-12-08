@@ -69,14 +69,17 @@
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row"> 
                 <div class="col-12">
-                    <div class="content-card">
-                        <h2>Welcome to Your Dashboard</h2>
-                        <p>This is a professional, responsive sidebar navigation built with Bootstrap 5 and Font Awesome 6.5 icons. Click the menu icon to toggle the sidebar open and closed. The design features clean lines and a modern business aesthetic with professional iconography.</p>
+                    <div class="content-card text-center">
+                        <h2>Welcome to Your Fleet Management System</h2>
+                        <p class="mt-2">
+                            Manage your aircraft, scheduling, maintenance, and operations efficiently — all in one place.
+                        </p>
                     </div>
                 </div>
             </div>
+
 
             <div class="row">
                 <div class="col-lg-6 col-md-12">
@@ -122,38 +125,40 @@
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.getElementById('sidebar');
     const mainContent = document.getElementById('mainContent');
-    const toggleIcon = document.querySelector('.toggle-icon');
+    const toggleIcon = sidebarToggle.querySelector('.toggle-icon');
+
+
+
 
     let sidebarOpen = true;
 
-    sidebarToggle.addEventListener('click', function() {
+    // Toggle Sidebar
+    function toggleSidebar() {
         sidebarOpen = !sidebarOpen;
-        
-        if (sidebarOpen) {
-            sidebar.classList.remove('closed');
-            toggleIcon.classList.remove('fa-bars');
-            toggleIcon.classList.add('fa-xmark');
-            
-            // Only shift content on larger screens
-            if (window.innerWidth > 992) {
-                mainContent.classList.add('shifted');
-                sidebarToggle.classList.add('shifted');
-            }
+
+        sidebar.classList.toggle('closed', !sidebarOpen);
+        sidebarToggle.classList.toggle('open', sidebarOpen);
+
+        toggleIcon.classList.toggle('fa-bars', !sidebarOpen);
+        toggleIcon.classList.toggle('fa-xmark', sidebarOpen);
+
+        if (window.innerWidth > 992) {
+            mainContent.classList.toggle('shifted', sidebarOpen);
+            sidebarToggle.classList.toggle('shifted', sidebarOpen);
         } else {
-            sidebar.classList.add('closed');
-            toggleIcon.classList.remove('fa-xmark');
-            toggleIcon.classList.add('fa-bars');
             mainContent.classList.remove('shifted');
             sidebarToggle.classList.remove('shifted');
         }
-    });
+    }
+
+    sidebarToggle.addEventListener('click', toggleSidebar);
 
     // Handle Window Resize
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', () => {
         if (window.innerWidth <= 992) {
             mainContent.classList.remove('shifted');
             sidebarToggle.classList.remove('shifted');
-        } else if (sidebarOpen && window.innerWidth > 992) {
+        } else if (sidebarOpen) {
             mainContent.classList.add('shifted');
             sidebarToggle.classList.add('shifted');
         }
@@ -161,44 +166,45 @@
 
     // Active Menu Item
     const menuItems = document.querySelectorAll('.menu-item');
-    
+
     menuItems.forEach(item => {
         item.addEventListener('click', function(e) {
             e.preventDefault();
-            
-            // Remove active class from all items
+
             menuItems.forEach(i => i.classList.remove('active'));
-            
-            // Add active class to clicked item
             this.classList.add('active');
-            
+
             // Close sidebar on mobile after clicking
             if (window.innerWidth <= 768) {
                 setTimeout(() => {
                     sidebar.classList.add('closed');
-                    sidebarOpen = false;
+                    sidebarToggle.classList.remove('open');
                     toggleIcon.classList.remove('fa-xmark');
                     toggleIcon.classList.add('fa-bars');
+                    sidebarOpen = false;
                 }, 300);
             }
         });
     });
 
     // Close sidebar when clicking outside on mobile
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', (e) => {
         if (window.innerWidth <= 768 && sidebarOpen) {
             if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
                 sidebar.classList.add('closed');
-                sidebarOpen = false;
+                sidebarToggle.classList.remove('open');
                 toggleIcon.classList.remove('fa-xmark');
                 toggleIcon.classList.add('fa-bars');
+                sidebarOpen = false;
             }
         }
     });
 
     // Initialize on page load
-    if (window.innerWidth > 992) {
+    if (window.innerWidth > 992 && sidebarOpen) {
         mainContent.classList.add('shifted');
         sidebarToggle.classList.add('shifted');
+        sidebarToggle.classList.add('open');
     }
+
 </script>

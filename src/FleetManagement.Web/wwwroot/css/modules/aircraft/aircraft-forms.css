@@ -1,0 +1,17 @@
+/* ------------------------------------------------------------
+   AIRCRAFT MODULE FORMS
+------------------------------------------------------------- */
+.form-control.aircraft {
+    border-color: #d7dfe8;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+}
+
+.form-control.aircraft:focus {
+    border-color: #0D1F3C;
+}
+
+.form-label.aircraft {
+    color: #121826;
+    font-weight: 500;
+}

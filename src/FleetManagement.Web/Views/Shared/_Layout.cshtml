@@ -5,7 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FleetManagement.Web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="~/css/base/reset.css" rel="stylesheet" />
+    <link href="~/css/base/variables.css" rel="stylesheet" />
+    <link href="~/css/base/typography.css" rel="stylesheet" />
+    <link href="~/css/base/layout.css" rel="stylesheet" />
+    <link href="~/css/base/utilities.css" rel="stylesheet" />
+
+    <!-- Aircraft module only on aircraft pages -->
     <link rel="stylesheet" href="~/FleetManagement.Web.styles.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
 </head>

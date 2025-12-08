@@ -1,0 +1,29 @@
+/* ------------------------------------------------------------
+   AIRCRAFT MODULE - General Aircraft Styling
+------------------------------------------------------------- */
+.content-card {
+    background: #ffffff;
+    border: 1px solid #d7dfe8;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.content-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.content-card h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #121826;
+    font-size: 1.5rem;
+}
+
+.content-card p {
+    color: #5c6370;
+    line-height: 1.7;
+}

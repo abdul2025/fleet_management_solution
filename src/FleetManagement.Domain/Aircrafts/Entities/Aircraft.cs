@@ -6,13 +6,16 @@ namespace FleetManagement.Domain.Aircrafts.Entities
     public class Aircraft : BaseEntity
     {
         public required string RegistrationNumber { get; set; }
+        public string SerialNumber { get; set; } = string.Empty;
         public required string Model { get; set; }
         public AircraftManufacturers Manufacturer { get; set; } = AircraftManufacturers.Boeing;
         public int? YearOfManufacture { get; set; }
         public AircraftStatus Status { get; set; } = AircraftStatus.Active;
 
-        // Navigation Properties TODO: Uncomment and implement related entities
-        // public ICollection<Component> Components { get; set; } = new List<Component>();
-        // public ICollection<MaintenanceEvent> MaintenanceEvents { get; set; } = new List<MaintenanceEvent>();
+
+
+        // Navigation property to AircraftSpecification
+        public AircraftSpecification AircraftSpecification { get; set; } = null!;
+
     }
 }

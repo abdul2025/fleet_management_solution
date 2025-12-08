@@ -31,11 +31,11 @@ namespace FleetManagement.Data.Configurations
                 .HasMaxLength(100)
                 .IsRequired();
 
-            // Manufacturer - Convert enum to string, NOT NULL (has default value)
+            // Manufacturer - Convert enum to int, NOT NULL
             builder.Property(a => a.Manufacturer)
                 .HasConversion<int>()
                 .HasColumnName("manufacturer")
-                .HasMaxLength(100) // Add max length for string storage
+                .HasMaxLength(100)
                 .IsRequired();
 
             // YearOfManufacture - Optional integer
@@ -43,23 +43,28 @@ namespace FleetManagement.Data.Configurations
                 .HasColumnName("year_of_manufacture")
                 .IsRequired(false);
 
-            // Status - Convert enum to string, NOT NULL (has default value)
+            // Status - Convert enum to int, NOT NULL
             builder.Property(a => a.Status)
                 .HasConversion<int>()
                 .HasColumnName("status")
                 .HasMaxLength(50)
                 .IsRequired();
 
-            // Additional Indexes (optional but recommended)
+            // Additional indexes
             builder.HasIndex(a => a.Status)
                 .HasDatabaseName("ix_aircrafts_status");
 
             builder.HasIndex(a => a.Model)
                 .HasDatabaseName("ix_aircrafts_model");
 
-            // Optional: Consider indexing manufacturer if frequently queried
             builder.HasIndex(a => a.Manufacturer)
                 .HasDatabaseName("ix_aircrafts_manufacturer");
+
+            // 1:1 relationship with AircraftSpecification
+            builder.HasOne(a => a.AircraftSpecification)
+                   .WithOne(s => s.Aircraft)
+                   .HasForeignKey<AircraftSpecification>(s => s.AircraftId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

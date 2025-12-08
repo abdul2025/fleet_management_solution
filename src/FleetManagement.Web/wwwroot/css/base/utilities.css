@@ -1,0 +1,20 @@
+/* Spacing */
+.m-0 { margin: 0 !important; }
+.mb-1 { margin-bottom: 0.25rem !important; }
+.mb-2 { margin-bottom: 0.5rem !important; }
+.p-2 { padding: 0.5rem !important; }
+.p-3 { padding: 1rem !important; }
+
+/* Text */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-light-muted { color: var(--text-light); }
+
+/* Flex */
+.d-flex { display: flex; }
+.flex-column { flex-direction: column; }
+.justify-between { justify-content: space-between; }
+.align-center { align-items: center; }
+
+/* Shadow */
+.shadow-soft { box-shadow: 0 2px 8px rgba(0,0,0,0.05); }

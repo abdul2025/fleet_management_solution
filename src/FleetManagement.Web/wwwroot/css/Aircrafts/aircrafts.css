@@ -1,14 +1,18 @@
 :root {
     --sidebar-width: 280px;
-    --primary-color: #1e40af;
-    --primary-dark: #1e3a8a;
-    --accent-color: #3b82f6;
-    --dark-bg: #f8fafc;
+
+    /* NAVY COLOR PALETTE */
+    --primary-color: #0D1F3C;       /* Navy */
+    --primary-dark: #0A162A;        /* Dark Navy */
+    --accent-color: #4A90E2;        /* Soft aviation blue */
+
+    --dark-bg: #F4F6FA;             /* Light cool background */
     --sidebar-bg: #ffffff;
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
-    --border-color: #e2e8f0;
-    --hover-bg: #f1f5f9;
+    --text-primary: #121826;
+    --text-secondary: #5C6370;
+    --border-color: #D7DFE8;
+    --hover-bg: #EEF2F6;
+
     --transition-speed: 0.3s;
 }
 
@@ -17,8 +21,6 @@
     padding: 0;
     box-sizing: border-box;
 }
-
-
 
 /* Sidebar Styles */
 .sidebar {
@@ -135,7 +137,7 @@
     cursor: pointer;
     z-index: 1001;
     transition: all var(--transition-speed) ease;
-    box-shadow: 0 2px 8px rgba(30, 64, 175, 0.2);
+    box-shadow: 0 2px 8px rgba(13, 31, 60, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -143,7 +145,7 @@
 
 .sidebar-toggle:hover {
     background: var(--primary-dark);
-    box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+    box-shadow: 0 4px 12px rgba(13, 31, 60, 0.3);
 }
 
 .sidebar-toggle:active {
@@ -226,7 +228,7 @@
     :root {
         --sidebar-width: 240px;
     }
-    
+
     .main-content.shifted {
         margin-left: 0;
     }

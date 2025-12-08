@@ -1,32 +1,18 @@
-html {
-  font-size: 14px;
-}
+/* ------------------------------------------------------------
+   SITE.CSS – Modular Import
+------------------------------------------------------------- */
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
+/* -----------------------
+   1. Base Global Styles
+------------------------ */
+@import url('./base/variables.css');
+@import url('./base/reset.css');
+@import url('./base/typography.css');
+@import url('./base/layout.css');
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  margin-bottom: 60px;
-}
-
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
-}
-
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
-
-}
+/* -----------------------
+   2. Aircraft Module
+------------------------ */
+@import url('./modules/aircraft/aircraft.css');
+@import url('./modules/aircraft/aircraft-sidebar.css');
+@import url('./modules/aircraft/aircraft-forms.css');
