@@ -1,3 +1,33 @@
+
+/* Header + Navbar (theme-aware) */
+.app-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+}
+
+.app-navbar .navbar-brand {
+    color: var(--text);
+}
+
+.app-navbar .nav-link {
+    color: var(--text-light);
+    transition: var(--transition);
+}
+
+.app-navbar .nav-link:hover {
+    color: var(--text);
+}
+
+.app-navbar .navbar-toggler {
+    border-color: var(--border);
+    background: var(--surface);
+}
+
+.app-navbar .navbar-toggler-icon {
+    filter: var(--navbar-icon-filter);
+}
+
+
 /* Buttons */
 .btn {
     border-radius: var(--radius);
@@ -69,3 +99,6 @@
 .table tbody tr:hover {
     background: var(--accent + "22"); /* light accent overlay */
 }
+
+
+

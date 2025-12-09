@@ -1,12 +1,15 @@
 /* ------------------------------------------------------------
-   AIRCRAFT MODULE - General Aircraft Styling
+   AIRCRAFT MODULE - General Aircraft Styling (Dynamic Theme)
 ------------------------------------------------------------- */
+
 .content-card {
-    background: #ffffff;
-    border: 1px solid #d7dfe8;
+    background: var(--surface);
+    border: 1px solid var(--border);
+
     border-radius: 12px;
     padding: 2rem;
     margin-bottom: 2rem;
+
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -19,11 +22,12 @@
     font-family: 'DM Sans', sans-serif;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: #121826;
+
+    color: var(--text);
     font-size: 1.5rem;
 }
 
 .content-card p {
-    color: #5c6370;
+    color: var(--text-light);
     line-height: 1.7;
 }

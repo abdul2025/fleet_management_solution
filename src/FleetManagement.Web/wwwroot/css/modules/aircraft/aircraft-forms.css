@@ -1,17 +1,21 @@
 /* ------------------------------------------------------------
-   AIRCRAFT MODULE FORMS
+   AIRCRAFT MODULE FORMS (Dynamic Theme)
 ------------------------------------------------------------- */
+
 .form-control.aircraft {
-    border-color: #d7dfe8;
+    border-color: var(--border);
     border-radius: 8px;
     padding: 0.5rem 0.75rem;
+    background: var(--surface);
+    color: var(--text);
 }
 
 .form-control.aircraft:focus {
-    border-color: #0D1F3C;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.2);
 }
 
 .form-label.aircraft {
-    color: #121826;
+    color: var(--text);
     font-weight: 500;
 }

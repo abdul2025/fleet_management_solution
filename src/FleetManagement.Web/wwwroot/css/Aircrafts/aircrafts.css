@@ -31,7 +31,7 @@
     width: var(--sidebar-width);
     background: var(--sidebar-bg);
     border-right: 1px solid var(--border-color);
-    transition: transform var(--transition-speed) ease;
+    transition: transform var(--transition-speed) ;
     z-index: 1000;
     overflow-y: auto;
     overflow-x: hidden;
@@ -93,7 +93,7 @@
     padding: 0.875rem 1.5rem;
     color: var(--text-secondary);
     text-decoration: none;
-    transition: all var(--transition-speed) ease;
+    transition: all var(--transition-speed) ;
     position: relative;
     margin: 0.125rem 0.75rem;
     border-radius: 8px;
@@ -136,7 +136,7 @@
     font-size: 1.125rem;
     cursor: pointer;
     z-index: 1001;
-    transition: all var(--transition-speed) ease;
+    transition: all var(--transition-speed) ;
     box-shadow: 0 2px 8px rgba(13, 31, 60, 0.2);
     display: flex;
     align-items: center;
@@ -157,14 +157,14 @@
 }
 
 .toggle-icon {
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ;
 }
 
 /* Main Content */
 .main-content {
     margin-left: 0;
     padding: 2rem;
-    transition: margin-left var(--transition-speed) ease;
+    transition: margin-left var(--transition-speed) ;
     min-height: 100vh;
 }
 
@@ -178,7 +178,7 @@
     border-radius: 12px;
     padding: 2rem;
     margin-bottom: 2rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ;
 }
 
 .content-card:hover {
