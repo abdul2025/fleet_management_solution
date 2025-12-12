@@ -25,6 +25,70 @@
     <!-- Icons -->
 }
 
+<!-- Sidebar -->
+<div>
+    <!-- Toggle Button -->
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fa-solid fa-xmark toggle-icon"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fa-solid fa-plane"></i> Fleet
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <a href="#" class="menu-item active">
+                <i class="fa-solid fa-jet-fighter"></i>
+                <span>Aircrafts</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fa-solid fa-gears"></i>
+                <span>Components</span>
+                <span class="menu-badge">12</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <span>Maintenance Events</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fa-solid fa-clipboard-list"></i>
+                <span>Task Card</span>
+            </a>
+            <div class="menu-divider"></div>
+
+            <a href="#" class="menu-item">
+                <i class="fa-solid fa-boxes-stacked"></i>
+                <span>Inventory Item</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Insurance Policy</span>
+                <span class="menu-badge">5</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <span>Insurance Claim</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fa-solid fa-file-contract"></i>
+                <span>Lease Contract</span>
+            </a>
+            <div class="menu-divider"></div>
+            <a href="#" class="menu-item">
+                <i class="fa-solid fa-folder-open"></i>
+                <span>Documents Control</span>
+            </a>
+        </nav>
+    </div>
+</div>
+    
+
+
+
 
 @RenderBody()
 
@@ -35,4 +99,9 @@
     
     <!-- Chart.js for demo chart -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
 }

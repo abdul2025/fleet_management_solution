@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FleetManagement.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251207174936_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251211214443_inital")]
+    partial class inital
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,6 +55,10 @@ namespace FleetManagement.Infrastructure.Data.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("registration_number");
 
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("Status")
                         .HasMaxLength(50)
                         .HasColumnType("integer")
@@ -84,6 +88,55 @@ namespace FleetManagement.Infrastructure.Data.Migrations
                         .HasDatabaseName("ix_aircrafts_status");
 
                     b.ToTable("aircrafts", (string)null);
+                });
+
+            modelBuilder.Entity("FleetManagement.Domain.Aircrafts.Entities.AircraftSpecification", b =>
+                {
+                    b.Property<int>("AircraftId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("BasedStation")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("based_station");
+
+                    b.Property<decimal>("MaxLandingWeight")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("max_landing_weight");
+
+                    b.Property<decimal>("MaxTakeoffWeight")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("max_takeoff_weight");
+
+                    b.Property<int>("SeatingCapacity")
+                        .HasColumnType("integer")
+                        .HasColumnName("seating_capacity");
+
+                    b.Property<int>("WeightUnit")
+                        .HasColumnType("integer")
+                        .HasColumnName("weight_unit");
+
+                    b.HasKey("AircraftId");
+
+                    b.ToTable("aircraft_specifications", (string)null);
+                });
+
+            modelBuilder.Entity("FleetManagement.Domain.Aircrafts.Entities.AircraftSpecification", b =>
+                {
+                    b.HasOne("FleetManagement.Domain.Aircrafts.Entities.Aircraft", "Aircraft")
+                        .WithOne("AircraftSpecification")
+                        .HasForeignKey("FleetManagement.Domain.Aircrafts.Entities.AircraftSpecification", "AircraftId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Aircraft");
+                });
+
+            modelBuilder.Entity("FleetManagement.Domain.Aircrafts.Entities.Aircraft", b =>
+                {
+                    b.Navigation("AircraftSpecification")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

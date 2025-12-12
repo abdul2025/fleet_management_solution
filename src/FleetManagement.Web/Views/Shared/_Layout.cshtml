@@ -26,6 +26,9 @@
     <link href="~/css/base/utilities.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="~/FleetManagement.Web.styles.css" asp-append-version="true" />
+
+
+    
     @await RenderSectionAsync("Styles", required: false)
 </head>
 
@@ -60,13 +63,6 @@
                 <!-- Right side -->
                 <ul class="navbar-nav ms-auto mb-2 mb-sm-0">
 
-                    <!-- 🌗 Theme Toggle -->
-                    <li class="nav-item d-flex align-items-center me-3">
-                        <button id="theme-toggle" class="btn btn-outline-secondary btn-sm theme-toggle-btn">
-                            <i id="theme-icon" class="bi"></i>
-                        </button>
-                    </li>
-
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">
@@ -84,6 +80,13 @@
                             <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
                         </li>
                     }
+                    <br/>
+                                        <!-- 🌗 Theme Toggle -->
+                    <li class="nav-item d-flex align-items-center me-3">
+                        <button id="theme-toggle" class="btn btn-outline-secondary btn-sm theme-toggle-btn">
+                            <i id="theme-icon" class="bi"></i>
+                        </button>
+                    </li>
                 </ul>
 
             </div>

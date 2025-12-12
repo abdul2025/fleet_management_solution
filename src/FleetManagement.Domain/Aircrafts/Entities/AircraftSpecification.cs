@@ -1,25 +1,28 @@
-using FleetManagement.Domain.Aircrafts.Entities;
+using System.ComponentModel.DataAnnotations;
 using FleetManagement.Shared.Enums.AircraftEnums;
 
 namespace FleetManagement.Domain.Aircrafts.Entities
 {
     public class AircraftSpecification
     {
-        // Primary Key & Foreign Key to Aircraft
+        [Key]
         public int AircraftId { get; set; }
 
-        // Base station (airport or city where aircraft is based)
+        [Required, StringLength(50)]
         public required string BasedStation { get; set; }
 
-        // Operational specifications
-        public int SeatingCapacity { get; set; } = 0;
-        public decimal MaxTakeoffWeight { get; set; } = 0;
-        public decimal MaxLandingWeight { get; set; } = 0;
+        [Range(1, 600)]
+        public int SeatingCapacity { get; set; }
 
-        public WeightUnit WeightUnit { get; set; } = WeightUnit.Kg;
+        [Range(1, 1000000)]
+        public decimal MaxTakeoffWeight { get; set; }
 
+        [Range(1, 1000000)]
+        public decimal MaxLandingWeight { get; set; }
 
-        
+        [Required]
+        public WeightUnit WeightUnit { get; set; }
+
 
         // Navigation property
         public Aircraft Aircraft { get; set; } = null!;

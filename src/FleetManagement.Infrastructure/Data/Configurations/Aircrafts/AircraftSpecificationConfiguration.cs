@@ -39,11 +39,6 @@ namespace FleetManagement.Data.Configurations
                 .HasColumnName("weight_unit")
                 .HasConversion<int>(); // store enum as int
 
-            // 1:1 relationship with Aircraft
-            builder.HasOne(s => s.Aircraft)
-                   .WithOne(a => a.AircraftSpecification)
-                   .HasForeignKey<AircraftSpecification>(s => s.AircraftId)
-                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using FleetManagement.Domain.CommonEntities;
 using FleetManagement.Shared.Enums;
 
@@ -5,17 +6,24 @@ namespace FleetManagement.Domain.Aircrafts.Entities
 {
     public class Aircraft : BaseEntity
     {
+        [Required, StringLength(12)]
         public required string RegistrationNumber { get; set; }
+
+        [StringLength(50)]
         public string SerialNumber { get; set; } = string.Empty;
+
+        [Required, StringLength(50)]
         public required string Model { get; set; }
-        public AircraftManufacturers Manufacturer { get; set; } = AircraftManufacturers.Boeing;
+
+        [Required]
+        public AircraftManufacturers Manufacturer { get; set; }
+
+        [Range(1950, 2050)]
         public int? YearOfManufacture { get; set; }
-        public AircraftStatus Status { get; set; } = AircraftStatus.Active;
 
+        [Required]
+        public AircraftStatus Status { get; set; }
 
-
-        // Navigation property to AircraftSpecification
         public AircraftSpecification AircraftSpecification { get; set; } = null!;
-
     }
 }
