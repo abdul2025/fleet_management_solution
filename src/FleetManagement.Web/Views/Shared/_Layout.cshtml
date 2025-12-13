@@ -54,9 +54,7 @@
             <div class="collapse navbar-collapse" id="navbarContent">
 
                 <!-- Left Links -->
-                <ul class="navbar-nav me-auto mb-2 mb-sm-0">
-                    <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
+                <ul class="navbar-nav me-auto mb-sm-0">
                     <li class="nav-item"><a class="nav-link" asp-controller="Aircrafts" asp-action="Index">Aircrafts</a></li>
                 </ul>
 
@@ -95,18 +93,13 @@
 </header>
 
 
-    <div class="container-fluid ">
+    <div class="container-fluid p-0 m-0">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - FleetManagement.Web -
-            <a asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+
 
     <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -3,30 +3,30 @@
 <div class="modal-content">
     <div class="modal-header">
         <h2>@(Model.Id == 0 ? "Add New Aircraft" : "Edit Aircraft")</h2>
-        <button type="button" class="close-btn" onclick="closeModal()">
+        <button type="button" class="close-btn" data-action="close-modal" aria-label="Close">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
         </button>
     </div>
     
-    <form id="aircraftForm" asp-action="@(Model.Id == 0 ? "Create" : "Edit")" asp-route-id="@Model.Id" method="post" onsubmit="return submitForm(event)">
+    <form id="aircraftForm" asp-action="@(Model.Id == 0 ? "Create" : "Edit")" asp-route-id="@Model.Id" method="post" novalidate>
         @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.Id)
         
         <div class="modal-body">
+            <!-- Basic Information -->
             <div class="form-section">
-                <h3 class="section-title">Basic Information</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label asp-for="RegistrationNumber" class="form-label">Registration Number</label>
-                        <input asp-for="RegistrationNumber" class="form-input" placeholder="e.g., N12345" />
+                        <input asp-for="RegistrationNumber" class="form-input" placeholder="e.g., N12345" autocomplete="off" />
                         <span asp-validation-for="RegistrationNumber" class="validation-error"></span>
                     </div>
                     
                     <div class="form-group">
                         <label asp-for="SerialNumber" class="form-label">Serial Number</label>
-                        <input asp-for="SerialNumber" class="form-input" placeholder="e.g., SN-2023-001" />
+                        <input asp-for="SerialNumber" class="form-input" placeholder="e.g., SN-2023-001" autocomplete="off" />
                         <span asp-validation-for="SerialNumber" class="validation-error"></span>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label asp-for="Model" class="form-label">Model</label>
-                        <input asp-for="Model" class="form-input" placeholder="e.g., Boeing 737-800" />
+                        <input asp-for="Model" class="form-input" placeholder="e.g., Boeing 737-800" autocomplete="off" />
                         <span asp-validation-for="Model" class="validation-error"></span>
                     </div>
                     
@@ -64,12 +64,12 @@
                 </div>
             </div>
 
+            <!-- Specifications -->
             <div class="form-section">
-                <h3 class="section-title">Technical Specifications</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label asp-for="Specification.BasedStation" class="form-label">Based Station</label>
-                        <input asp-for="Specification.BasedStation" class="form-input" placeholder="e.g., JFK International" />
+                        <input asp-for="Specification.BasedStation" class="form-input" placeholder="e.g., JFK International" autocomplete="off" />
                         <span asp-validation-for="Specification.BasedStation" class="validation-error"></span>
                     </div>
                     
@@ -107,194 +107,13 @@
         </div>
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button type="button" class="btn btn-secondary" data-action="close-modal">Cancel</button>
             <button type="submit" class="btn btn-primary" id="submitBtn">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                 </svg>
-                @(Model.Id == 0 ? "Create Aircraft" : "Save Changes")
+                <span>@(Model.Id == 0 ? "Create Aircraft" : "Save Changes")</span>
             </button>
         </div>
     </form>
 </div>
-
-<style>
-    .modal-content {
-        background: var(--surface);
-        border-radius: 12px;
-        max-width: 800px;
-        width: 100%;
-        max-height: 90vh;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    }
-
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1.25rem 1.5rem;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .modal-header h2 {
-        margin: 0;
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--text);
-    }
-
-    .close-btn {
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        padding: 0.25rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 6px;
-        transition: var(--transition);
-        color: var(--text-light);
-    }
-
-    .close-btn:hover {
-        background: var(--surface-alt);
-        color: var(--text);
-    }
-
-    .modal-body {
-        padding: 1.5rem;
-        overflow-y: auto;
-        flex: 1;
-    }
-
-    .form-section {
-        margin-bottom: 1.5rem;
-    }
-
-    .form-section:last-child {
-        margin-bottom: 0;
-    }
-
-    .section-title {
-        font-size: 1rem;
-        font-weight: 600;
-        color: var(--primary);
-        margin: 0 0 1rem 0;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .section-title::before {
-        content: '';
-        width: 3px;
-        height: 1rem;
-        background: var(--primary);
-        border-radius: 2px;
-    }
-
-    .form-row {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    .form-row:last-child {
-        margin-bottom: 0;
-    }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.375rem;
-    }
-
-    .form-label {
-        font-size: 0.8125rem;
-        font-weight: 500;
-        color: var(--text);
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-    }
-
-    .form-input {
-        padding: 0.625rem 0.875rem;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        font-size: 0.9375rem;
-        color: var(--text);
-        background: var(--surface);
-        transition: var(--transition);
-    }
-
-    .form-input:focus {
-        outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(6, 60, 55, 0.1);
-    }
-
-    .form-input.error {
-        border-color: #ef4444;
-    }
-
-    .form-input.error:focus {
-        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-    }
-
-    .form-input::placeholder {
-        color: var(--text-light);
-    }
-
-    .validation-error {
-        font-size: 0.75rem;
-        color: #ef4444;
-        margin-top: 0.25rem;
-        display: none;
-        font-weight: 500;
-    }
-
-    .validation-error.show {
-        display: block;
-    }
-
-    .modal-footer {
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.75rem;
-        padding: 1rem 1.5rem;
-        border-top: 1px solid var(--border);
-        background: var(--surface-alt);
-        border-radius: 0 0 12px 12px;
-    }
-
-    .btn-secondary {
-        background: var(--surface-alt);
-        color: var(--text);
-    }
-
-    .btn-secondary:hover {
-        background: var(--border);
-    }
-
-    @* @media (max-width: 768px) {
-        .modal-content {
-            max-width: 95%;
-            max-height: 95vh;
-        }
-
-        .form-row {
-            grid-template-columns: 1fr;
-        }
-
-        .modal-footer {
-            flex-direction: column-reverse;
-        }
-
-        .modal-footer .btn {
-            width: 100%;
-        }
-    } *@
-</style>

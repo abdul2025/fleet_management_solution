@@ -1,0 +1,69 @@
+@model IEnumerable<FleetManagement.Application.Aircrafts.DTOs.AircraftDto>
+@using FleetManagement.Shared.Enums
+
+<div class="aircraft-stats">
+    <!-- Active -->
+    <div class="stat-card">
+        <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <span class="stat-number">@Model.Count(a => a.Status == AircraftStatus.Active)</span>
+            <span class="stat-label">Active</span>
+        </div>
+    </div>
+
+    <!-- Maintenance -->
+    <div class="stat-card">
+        <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <span class="stat-number">@Model.Count(a => a.Status == AircraftStatus.InMaintenance)</span>
+            <span class="stat-label">Maintenance</span>
+        </div>
+    </div>
+
+    <!-- Based in Jeddah -->
+    <div class="stat-card">
+        <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 100 20 10 10 0 000-20z"/>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <span class="stat-number">@Model.Count(a => a.Specification.BasedStation?.Equals("Jeddah", StringComparison.OrdinalIgnoreCase) == true)</span>
+            <span class="stat-label">Based in Jeddah</span>
+        </div>
+    </div>
+
+    <!-- Boeing -->
+    <div class="stat-card">
+        <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18M12 3l9 9-9 9"/>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <span class="stat-number">@Model.Count(a => a.Manufacturer == AircraftManufacturers.Boeing)</span>
+            <span class="stat-label">Boeing</span>
+        </div>
+    </div>
+
+    <!-- Airbus -->
+    <div class="stat-card">
+        <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18M12 3l9 9-9 9"/>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <span class="stat-number">@Model.Count(a => a.Manufacturer == AircraftManufacturers.Airbus)</span>
+            <span class="stat-label">Airbus</span>
+        </div>
+    </div>
+</div>

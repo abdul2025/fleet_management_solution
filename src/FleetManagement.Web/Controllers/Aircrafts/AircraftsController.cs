@@ -27,213 +27,141 @@ namespace FleetManagement.Web.Controllers.Aircrafts
             return View(aircrafts);
         }
 
-        // GET: Aircrafts/GetCreateModal
-        public IActionResult GetCreateModal()
+
+
+        // GET: Aircraft/Create for the modal
+        public async Task<IActionResult> CreateModal()
         {
-            PopulateDropdowns();
-            return PartialView("_CreateEditModal", new AircraftDto 
-            { 
-                Specification = new AircraftSpecificationDto() 
-            });
+            var dto = new AircraftDto(); // For creation
+            PopulateDropdowns(dto);
+            return PartialView("_CreateEditModal", dto);
         }
 
-        // GET: Aircrafts/GetEditModal/5
-        public async Task<IActionResult> GetEditModal(int id)
+        public async Task<IActionResult> EditModal(int id)
         {
-            var aircraft = await _service.GetByIdAsync(id);
-            
-            if (aircraft == null)
-            {
-                return Json(new { success = false, message = "Aircraft not found." });
-            }
+            var aircraft = await _service.GetByIdAsync(id); // FIXED
 
-            PopulateDropdowns();
+            if (aircraft == null)
+                return NotFound();
+
+            PopulateDropdowns(aircraft);
             return PartialView("_CreateEditModal", aircraft);
         }
 
-        // POST: Aircrafts/Create
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(AircraftDto aircraft)
+        public async Task<IActionResult> Create(AircraftDto dto)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    var errors = ModelState
-                        .Where(x => x.Value.Errors.Any())
-                        .ToDictionary(
-                            kvp => kvp.Key,
-                            kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
-                        );
-                    
-                    return Json(new 
-                    { 
-                        success = false, 
-                        message = "Please correct the validation errors.",
-                        errors = errors
-                    });
+                    var errors = ModelState.ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                    );
+                    return Json(new { success = false, errors });
                 }
 
-                var createdAircraft = await _service.CreateAsync(aircraft);
-                var allAircrafts = await _service.GetAllAsync();
-                
-                return Json(new 
-                { 
-                    success = true, 
-                    message = "Aircraft created successfully!",
-                    data = createdAircraft,
-                    allData = allAircrafts
-                });
+                await _service.CreateAsync(dto);
+                return Json(new { success = true });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating aircraft");
-                return Json(new 
-                { 
-                    success = false, 
-                    message = "An error occurred while creating the aircraft.",
-                    error = ex.Message
-                });
+                return Json(new { success = false, errors = new { General = new[] { "An unexpected error occurred. Please try again." } } });
             }
         }
 
-        // POST: Aircrafts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, AircraftDto aircraft)
+        public async Task<IActionResult> Edit(int id, AircraftDto dto)
         {
             try
             {
-                if (id != aircraft.Id)
-                {
-                    return Json(new 
-                    { 
-                        success = false, 
-                        message = "Invalid aircraft ID."
-                    });
-                }
-
                 if (!ModelState.IsValid)
                 {
-                    var errors = ModelState
-                        .Where(x => x.Value.Errors.Any())
-                        .ToDictionary(
-                            kvp => kvp.Key,
-                            kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
-                        );
-                    
-                    return Json(new 
-                    { 
-                        success = false, 
-                        message = "Please correct the validation errors.",
-                        errors = errors
-                    });
+                    PopulateDropdowns(dto);
+                    var errors = ModelState.ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                    );
+                    return Json(new { success = false, errors });
                 }
 
-                var result = await _service.UpdateAsync(id, aircraft);
-                
-                if (result == null)
-                {
-                    return Json(new 
-                    { 
-                        success = false, 
-                        message = "Aircraft not found."
-                    });
-                }
-
-                var allAircrafts = await _service.GetAllAsync();
-                
-                return Json(new 
-                { 
-                    success = true, 
-                    message = "Aircraft updated successfully!",
-                    data = result,
-                    allData = allAircrafts
-                });
+                await _service.UpdateAsync(id, dto);
+                return Json(new { success = true });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error updating aircraft with ID {Id}", id);
-                return Json(new 
-                { 
-                    success = false, 
-                    message = "An error occurred while updating the aircraft.",
-                    error = ex.Message
-                });
+                _logger.LogError(ex, $"Error updating aircraft with ID {id}");
+                return Json(new { success = false, errors = new { General = new[] { "An unexpected error occurred. Please try again." } } });
             }
         }
 
-        // POST: Aircrafts/Delete/5
+
+
+        public async Task<IActionResult> AircraftListPartial()
+        {
+            var aircrafts = await _service.GetAllAsync();
+            if (!aircrafts.Any())
+            {
+                return PartialView("_EmptyAircraftListPartial");
+            }
+            return PartialView("_AircraftListPartial", aircrafts);
+        }
+
+
+        
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var result = await _service.DeleteAsync(id);
-                
-                if (!result)
-                {
-                    return Json(new 
-                    { 
-                        success = false, 
-                        message = "Aircraft not found or could not be deleted."
-                    });
-                }
-
-                var allAircrafts = await _service.GetAllAsync();
-                
-                return Json(new 
-                { 
-                    success = true, 
-                    message = "Aircraft deleted successfully!",
-                    deletedId = id,
-                    allData = allAircrafts
-                });
+                await _service.DeleteAsync(id);
+                return Json(new { success = true });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting aircraft with ID {Id}", id);
-                return Json(new 
-                { 
-                    success = false, 
-                    message = "An error occurred while deleting the aircraft.",
-                    error = ex.Message
-                });
+                return Json(new { success = false, message = ex.Message });
             }
         }
 
-        // Helper method to populate dropdowns
-        private void PopulateDropdowns()
+
+        // TODO: this is not working correctly
+        [HttpGet]
+        public async Task<IActionResult> AircraftStatsPartial()
         {
+            var aircrafts = _service.GetAllAsync();
+            return PartialView("_AircraftStatsPartial", aircrafts);
+        }
+
+
+
+
+
+
+
+
+        private void PopulateDropdowns(AircraftDto dto)
+{
             ViewBag.Manufacturers = Enum.GetValues(typeof(AircraftManufacturers))
                 .Cast<AircraftManufacturers>()
-                .Select(m => new SelectListItem
-                {
-                    Value = ((int)m).ToString(),
-                    Text = m.ToString()
-                })
-                .ToList();
+                .Select(x => new SelectListItem { Value = x.ToString(), Text = x.ToString(), Selected = x == dto.Manufacturer });
 
             ViewBag.Statuses = Enum.GetValues(typeof(AircraftStatus))
                 .Cast<AircraftStatus>()
-                .Select(s => new SelectListItem
-                {
-                    Value = ((int)s).ToString(),
-                    Text = s.ToString()
-                })
-                .ToList();
+                .Select(x => new SelectListItem { Value = x.ToString(), Text = x.ToString(), Selected = x == dto.Status });
 
             ViewBag.WeightUnits = Enum.GetValues(typeof(WeightUnit))
                 .Cast<WeightUnit>()
-                .Select(w => new SelectListItem
-                {
-                    Value = ((int)w).ToString(),
-                    Text = w.ToString()
-                })
-                .ToList();
+                .Select(x => new SelectListItem { Value = x.ToString(), Text = x.ToString(), Selected = x == dto.Specification.WeightUnit });
         }
+
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

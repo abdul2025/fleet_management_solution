@@ -1,85 +1,67 @@
-// Sidebar Toggle Functionality
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('mainContent');
-    const toggleIcon = sidebarToggle.querySelector('.toggle-icon');
+// Sidebar Elements
+const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebar = document.getElementById('sidebar');
+const toggleIcon = sidebarToggle.querySelector('.toggle-icon');
 
+// Sidebar state
+let sidebarOpen = false;
 
+// Apply UI state
+function applySidebarState() {
+    sidebar.classList.toggle('closed', !sidebarOpen);
+    sidebarToggle.classList.toggle('open', sidebarOpen);
 
+    // Icon flip
+    toggleIcon.classList.toggle('fa-xmark', sidebarOpen);
+    toggleIcon.classList.toggle('fa-chevron-right', !sidebarOpen);
 
-    let sidebarOpen = true;
+    // Desktop behavior (shift layout)
+    if (window.innerWidth > 992) {
+        sidebarToggle.classList.toggle('shifted', sidebarOpen);
+    } else {
+        sidebarToggle.classList.remove('shifted');
+    }
+}
 
-    // Toggle Sidebar
-    function toggleSidebar() {
-        sidebarOpen = !sidebarOpen;
+// Toggle sidebar
+function toggleSidebar() {
+    sidebarOpen = !sidebarOpen;
+    applySidebarState();
+}
 
-        sidebar.classList.toggle('closed', !sidebarOpen);
-        sidebarToggle.classList.toggle('open', sidebarOpen);
+sidebarToggle.addEventListener('click', toggleSidebar);
 
-        toggleIcon.classList.toggle('fa-chevron-right', !sidebarOpen);
-        toggleIcon.classList.toggle('fa-xmark', sidebarOpen);
+// Window resize behavior
+window.addEventListener('resize', () => {
+    applySidebarState();
+});
 
-        if (window.innerWidth > 992) {
-            mainContent.classList.toggle('shifted', sidebarOpen);
-            sidebarToggle.classList.toggle('shifted', sidebarOpen);
-        } else {
-            mainContent.classList.remove('shifted');
-            sidebarToggle.classList.remove('shifted');
+// Close sidebar when clicking menu item on mobile
+document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            sidebarOpen = false;
+            applySidebarState();
+        }
+    });
+});
+
+// Close sidebar when clicking outside (mobile only)
+document.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768 && sidebarOpen) {
+        if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+            sidebarOpen = false;
+            applySidebarState();
         }
     }
+});
 
-    sidebarToggle.addEventListener('click', toggleSidebar);
+// ------------------------------------
+// INITIALIZATION ON PAGE LOAD
+// ------------------------------------
+window.addEventListener('DOMContentLoaded', () => {
+    sidebarOpen = false;  // Force closed
+    applySidebarState();  // Apply UI
+});
 
-    // Handle Window Resize
-    window.addEventListener('resize', () => {
-        if (window.innerWidth <= 992) {
-            mainContent.classList.remove('shifted');
-            sidebarToggle.classList.remove('shifted');
-        } else if (sidebarOpen) {
-            mainContent.classList.add('shifted');
-            sidebarToggle.classList.add('shifted');
-        }
-    });
 
-    // Active Menu Item
-    const menuItems = document.querySelectorAll('.menu-item');
-
-    menuItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-
-            menuItems.forEach(i => i.classList.remove('active'));
-            this.classList.add('active');
-
-            // Close sidebar on mobile after clicking
-            if (window.innerWidth <= 768) {
-                setTimeout(() => {
-                    sidebar.classList.add('closed');
-                    sidebarToggle.classList.remove('open');
-                    toggleIcon.classList.remove('fa-xmark');
-                    toggleIcon.classList.add('fa-chevron-right');
-                    sidebarOpen = false;
-                }, 300);
-            }
-        });
-    });
-
-    // Close sidebar when clicking outside on mobile
-    document.addEventListener('click', (e) => {
-        if (window.innerWidth <= 768 && sidebarOpen) {
-            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
-                sidebar.classList.add('closed');
-                sidebarToggle.classList.remove('open');
-                toggleIcon.classList.remove('fa-xmark');
-                toggleIcon.classList.add('fa-chevron-right');
-                sidebarOpen = false;
-            }
-        }
-    });
-
-    // Initialize on page load
-    if (window.innerWidth > 992 && sidebarOpen) {
-        mainContent.classList.add('shifted');
-        sidebarToggle.classList.add('shifted');
-        sidebarToggle.classList.add('open');
-    }
