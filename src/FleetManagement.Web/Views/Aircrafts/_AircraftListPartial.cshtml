@@ -5,11 +5,11 @@
     <div id="aircraftList" class="aircraft-grid">
         @foreach (var aircraft in Model)
         {
-            @Html.Partial("_AircraftCard", aircraft)
+            <partial name="_AircraftCard" model="aircraft" />
         }
     </div>
 }
 else
 {
-    @Html.Partial("_EmptyAircraftListPartial")
+    <partial name="_EmptyAircraftListPartial" />
 }

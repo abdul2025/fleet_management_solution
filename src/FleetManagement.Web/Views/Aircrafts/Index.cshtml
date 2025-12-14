@@ -6,7 +6,7 @@
     var maintenanceCount = Model.Count(a => a.Status == AircraftStatus.InMaintenance);
 
     // Count by Based Station
-    var jeddahCount = Model.Count(a => a.Specification.BasedStation?.Equals("Jeddah", StringComparison.OrdinalIgnoreCase) == true);
+    var jeddahCount = Model.Count(a => a.Specification.BasedStation?.Equals("JEDDAH", StringComparison.OrdinalIgnoreCase) == true);
 
     // Count by Manufacturer
     var boeingCount = Model.Count(a => a.Manufacturer == AircraftManufacturers.Boeing);
@@ -24,7 +24,9 @@
 <div class="aircraft-container">
 
     <div id="aircraftStats" class="aircraft-stats">
-       @Html.Partial("_AircraftStatsPartial", Model)
+       <partial name="_AircraftStatsPartial" model="Model" />
+
+
     </div>
 
 
@@ -43,13 +45,39 @@
             Add New Aircraft
         </button>
     </div>
-    <div id="aircraftList">
+    <div id="aircraftList" class="aircraft-list-box">
+        <div class="aircraft-filter">
+            <form method="get" asp-action="Index" asp-controller="Aircrafts" class="filter-form">
+                <div class="filter-row">
+                    <input type="text" name="Registration" placeholder="Registration" value="@(Context.Request.Query["Registration"])" />
+
+                    <select name="Status">
+                        <option value="">All Status</option>
+                        @foreach (AircraftStatus status in Enum.GetValues(typeof(AircraftStatus)))
+                        {
+                            <option value="@status" @(Context.Request.Query["Status"] == status.ToString() ? "selected" : "")>@status</option>
+                        }
+                    </select>
+
+                    <input type="text" name="BasedStation" placeholder="Based Station" value="@(Context.Request.Query["BasedStation"])" />
+                    <input type="text" name="Model" placeholder="Model" value="@(Context.Request.Query["Model"])" />
+                    <input type="number" name="YearFrom" placeholder="Year From" value="@(Context.Request.Query["YearFrom"])" />
+                    <input type="number" name="YearTo" placeholder="Year To" value="@(Context.Request.Query["YearTo"])" />
+
+
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </form>
+        </div>
+
+        
         @if (Model != null && Model.Any())
         {
             <div id="aircraftList" class="aircraft-grid">
                 @foreach (var aircraft in Model)
                 {
-                    @Html.Partial("_AircraftCard", aircraft)
+                    <partial name="_AircraftCard" model="aircraft" />
+
                 }
             </div>
         }
@@ -83,15 +111,15 @@
         </div>
     </div>
 
-
+    <!-- Modal Container -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+        <div id="modalContent"></div>
+    </div>
 
 
 
 </div>
 
-<!-- Modal Container -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
-    <div id="modalContent"></div>
-</div>
+
 
 <script src="~/js/Aircrafts/aircraft-management.js" asp-append-version="true"></script>

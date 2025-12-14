@@ -21,9 +21,21 @@ namespace FleetManagement.Web.Controllers.Aircrafts
         }
 
         // GET: Aircraft
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] AircraftFilterDto? filter)
         {
-            var aircrafts = await _service.GetAllAsync();
+            IEnumerable<AircraftDto> aircrafts;
+
+            if (filter != null && (filter.Status.HasValue || !string.IsNullOrWhiteSpace(filter.Registration)
+                || !string.IsNullOrWhiteSpace(filter.BasedStation) || !string.IsNullOrWhiteSpace(filter.Model)
+                || filter.YearFrom.HasValue || filter.YearTo.HasValue))
+            {
+                aircrafts = await _service.GetFilteredAsync(filter);
+            }
+            else
+            {
+                aircrafts = await _service.GetAllAsync();
+            }
+
             return View(aircrafts);
         }
 
@@ -103,13 +115,18 @@ namespace FleetManagement.Web.Controllers.Aircrafts
 
 
 
-        public async Task<IActionResult> AircraftListPartial()
+        public async Task<IActionResult> AircraftListPartial([FromQuery] AircraftFilterDto? filter)
         {
-            var aircrafts = await _service.GetAllAsync();
+            IEnumerable<AircraftDto> aircrafts;
+
+            if (filter != null)
+                aircrafts = await _service.GetFilteredAsync(filter);
+            else
+                aircrafts = await _service.GetAllAsync();
+
             if (!aircrafts.Any())
-            {
                 return PartialView("_EmptyAircraftListPartial");
-            }
+
             return PartialView("_AircraftListPartial", aircrafts);
         }
 

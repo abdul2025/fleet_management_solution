@@ -130,5 +130,55 @@ namespace FleetManagement.Infrastructure.Services.Aircrafts
             await _context.SaveChangesAsync();
             return true;
         }
+
+
+
+        public async Task<IEnumerable<AircraftDto>> GetFilteredAsync(AircraftFilterDto filter)
+        {
+            IQueryable<Aircraft> query = _context.Aircrafts
+                .Include(a => a.AircraftSpecification);
+
+            if (filter.Status.HasValue)
+                query = query.Where(a => a.Status == filter.Status);
+
+            if (!string.IsNullOrWhiteSpace(filter.Registration))
+                query = query.Where(a => a.RegistrationNumber.Contains(filter.Registration));
+
+            if (!string.IsNullOrWhiteSpace(filter.BasedStation))
+                query = query.Where(a => a.AircraftSpecification.BasedStation == filter.BasedStation);
+
+            if (!string.IsNullOrWhiteSpace(filter.Model))
+                query = query.Where(a => a.Model == filter.Model);
+
+            if (filter.YearFrom.HasValue)
+                query = query.Where(a => a.YearOfManufacture >= filter.YearFrom);
+
+            if (filter.YearTo.HasValue)
+                query = query.Where(a => a.YearOfManufacture <= filter.YearTo);
+
+            // Manual projection without AutoMapper
+            return await query
+                .Select(a => new AircraftDto
+                {
+                    Id = a.Id,
+                    RegistrationNumber = a.RegistrationNumber,
+                    SerialNumber = a.SerialNumber,
+                    Model = a.Model,
+                    Manufacturer = a.Manufacturer,
+                    YearOfManufacture = a.YearOfManufacture,
+                    Status = a.Status,
+                    Specification = a.AircraftSpecification == null ? null : new AircraftSpecificationDto
+                    {
+                        BasedStation = a.AircraftSpecification.BasedStation,
+                        SeatingCapacity = a.AircraftSpecification.SeatingCapacity,
+                        MaxTakeoffWeight = a.AircraftSpecification.MaxTakeoffWeight,
+                        MaxLandingWeight = a.AircraftSpecification.MaxLandingWeight,
+                        WeightUnit = a.AircraftSpecification.WeightUnit
+                    }
+                })
+                .ToListAsync();
+        }
+
+
     }
 }

@@ -1,11 +1,18 @@
+
+
+/* ==========================================================================
+   Main Container
+   ========================================================================== */
 .aircraft-container {
     padding: 4.5rem 1rem;
     background: var(--bg);
     min-height: 100vh;
 }
 
-
-.aircraft-stats {
+/* ==========================================================================
+   Statistics Cards
+   ========================================================================== */
+.aircraft-stats-container {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
@@ -15,22 +22,23 @@
 .stat-card {
     display: flex;
     align-items: center;
-    background: var(--card-bg, #fff);
+    background: var(--surface);
     padding: 12px 16px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    flex: 1 1 150px; /* responsive width */
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    flex: 1 1 150px;
     min-width: 150px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--border);
 }
 
 .stat-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    box-shadow: var(--shadow-lg);
 }
 
 .stat-icon {
-    background-color: #f0f0f0;
+    background-color: var(--surface-alt);
     border-radius: 50%;
     padding: 8px;
     margin-right: 12px;
@@ -42,7 +50,7 @@
 .stat-icon svg {
     width: 24px;
     height: 24px;
-    stroke: #007bff; /* main color */
+    stroke: var(--primary);
 }
 
 .stat-info {
@@ -63,7 +71,9 @@
     letter-spacing: 0.5px;
 }
 
-
+/* ==========================================================================
+   Header
+   ========================================================================== */
 .aircraft-header {
     display: flex;
     justify-content: space-between;
@@ -81,6 +91,9 @@
     gap: 0.5rem;
 }
 
+/* ==========================================================================
+   Buttons (Consolidated)
+   ========================================================================== */
 .btn {
     padding: 0.5rem 1rem;
     border-radius: 8px;
@@ -95,6 +108,11 @@
     font-size: 0.875rem;
 }
 
+.btn:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
 .btn-primary {
     background: var(--primary) !important;
     color: white;
@@ -103,44 +121,50 @@
 .btn-primary:hover {
     background: var(--primary-dark);
     transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(6, 60, 55, 0.2);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary {
+    background: var(--surface-alt);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    background: var(--border);
+}
+
+/* Small Button Variants */
+.btn-edit,
+.btn-delete,
+.btn-details {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
 }
 
 .btn-edit {
-    background: #0ea5e9;
-    color: white;
-    padding: 0.375rem 0.75rem;
-    font-size: 0.8125rem;
-}
-
-.btn-edit svg path {
-    stroke: #094d6f; /* Bootstrap primary blue */
-}
-
-.btn-delete svg path {
-    stroke: #dc3545; /* Bootstrap danger red */
+    background: var(--info);
+    color: var(--info) !important;
 }
 
 .btn-edit:hover {
-    background: #0284c7;
+    background: var(--info-dark);
 }
 
-.btn-delete {
-    background: #ef4444;
-    color: white;
-    padding: 0.375rem 0.75rem;
-    font-size: 0.8125rem;
+.btn-delete,
+.btn-danger {
+    background: var(--danger);
+    color: var(--danger) !important;
 }
 
-.btn-delete:hover {
+.btn-delete:hover,
+.btn-danger:hover {
     background: #dc2626;
 }
 
 .btn-details {
     background: transparent;
     color: var(--primary);
-    padding: 0.375rem 0.75rem;
-    font-size: 0.8125rem;
     border: 1px solid var(--border);
 }
 
@@ -149,25 +173,51 @@
     border-color: var(--primary);
 }
 
+/* Button States */
+.btn.loading {
+    pointer-events: none;
+    opacity: 0.6;
+    position: relative;
+    color: transparent;
+}
+
+.btn-primary .spinner {
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+/* ==========================================================================
+   Aircraft Grid & Cards
+   ========================================================================== */
 .aircraft-grid {
     display: grid;
     gap: 1rem;
+}
+
+.aircraft-list-box {
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    box-shadow: var(--shadow-sm);
 }
 
 .aircraft-card {
     background: var(--surface);
     border-radius: 10px;
     padding: 1rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-sm);
     transition: var(--transition);
+    border: 1px solid var(--border);
 }
 
 .aircraft-card:hover {
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
 }
 
-
-
+/* Card Header */
 .card-header {
     display: flex;
     justify-content: space-between;
@@ -190,6 +240,79 @@
     margin: 0;
 }
 
+.card-actions {
+    display: flex;
+    gap: 0.375rem;
+}
+
+/* Card Body */
+.card-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
+    gap: 12px;
+    justify-items: center;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.125rem;
+    width: 150px;
+    word-break: break-word;
+    text-align: center;
+}
+
+.info-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: var(--surface-alt);
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+    border: 1px solid var(--border);
+}
+
+.info-value {
+    font-size: 0.9375rem;
+    color: var(--text);
+    font-weight: 500;
+}
+
+/* Buttons Container - ALWAYS horizontal on all screens */
+.info-item:last-child {
+    width: 100%;
+}
+
+.info-item:last-child div {
+    display: flex;
+    flex-direction: row !important;
+    gap: 0.5rem;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: nowrap;
+}
+
+.info-item:last-child div .btn {
+    min-width: 100px;
+    flex: 1;
+    max-width: 200px;
+}
+
+/* Card Footer */
+.card-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+}
+
+/* ==========================================================================
+   Status Badges
+   ========================================================================== */
 .status-badge {
     padding: 0.25rem 0.625rem;
     border-radius: 5px;
@@ -200,81 +323,28 @@
 }
 
 .status-active {
-    background: #dcfce7;
-    color: #166534;
+    background: var(--success-bg);
+    color: var(--success-text);
 }
 
 .status-maintenance {
-    background: #fef3c7;
-    color: #92400e;
+    background: var(--warning-bg);
+    color: var(--warning-text);
 }
 
 .status-inactive {
-    background: #fee2e2;
-    color: #991b1b;
+    background: var(--danger-bg);
+    color: var(--danger-text);
 }
 
 .status-retired {
-    background: #f3f4f6;
-    color: #4b5563;
+    background: var(--neutral-bg);
+    color: var(--neutral-text);
 }
 
-.card-actions {
-    display: flex;
-    gap: 0.375rem;
-}
-.card-body {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(85px, 1fr)); /* Each item takes at least 150px, grows evenly */
-    gap: 12px;
-    justify-items: center;
-}
-
-/* Fixed width for each item, content wraps inside */
-.info-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.125rem;
-    width: 150px;          /* Fixed width */
-    word-break: break-word; /* Wrap content if too long */
-    text-align: center;     /* Center content inside the item */
-}
-
-/* Labels */
-.info-label {
-    font-size: 0.875rem;  /* slightly bigger */
-    color: var(--text-light);
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    font-weight: 500;
-}
-
-/* Values */
-.info-value {
-    font-size: 0.9375rem; /* ~15px */
-    color: var(--text);
-    font-weight: 500;
-}
-
-/* Buttons in last item */
-.info-item:last-child div {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: center;
-    width: 100%; /* fill the grid item */
-}
-
-
-.card-footer {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 0.75rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--border);
-}
-
-/* Specification Details (Expandable) */
+/* ==========================================================================
+   Specification Details (Expandable)
+   ========================================================================== */
 .spec-details {
     max-height: 0;
     overflow: hidden;
@@ -325,12 +395,15 @@
     transform: rotate(180deg);
 }
 
-/* Empty State */
+/* ==========================================================================
+   Empty State
+   ========================================================================== */
 .empty-state {
     text-align: center;
     padding: 3rem 1.5rem;
     background: var(--surface);
     border-radius: 10px;
+    border: 1px solid var(--border);
 }
 
 .empty-state svg {
@@ -352,8 +425,9 @@
     font-size: 0.9375rem;
 }
 
-
-/* Toast Notification */
+/* ==========================================================================
+   Toast Notification
+   ========================================================================== */
 .toast {
     position: fixed;
     top: 2rem;
@@ -361,13 +435,14 @@
     background: var(--surface);
     padding: 1rem 1.5rem;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-lg);
     display: flex;
     align-items: center;
     gap: 0.75rem;
     z-index: 2000;
     transform: translateX(400px);
     transition: transform 0.3s ease;
+    border: 1px solid var(--border);
 }
 
 .toast.show {
@@ -375,11 +450,11 @@
 }
 
 .toast.success {
-    border-left: 4px solid #22c55e;
+    border-left: 4px solid var(--success);
 }
 
 .toast.error {
-    border-left: 4px solid #ef4444;
+    border-left: 4px solid var(--danger);
 }
 
 .toast-icon {
@@ -392,12 +467,9 @@
     font-weight: 500;
 }
 
-/* Loading Spinner */
-.loading {
-    pointer-events: none;
-    opacity: 0.6;
-}
-
+/* ==========================================================================
+   Loading Spinner (Consolidated)
+   ========================================================================== */
 .spinner {
     width: 20px;
     height: 20px;
@@ -411,76 +483,18 @@
     to { transform: rotate(360deg); }
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .aircraft-container {
-        padding: 1rem;
-    }
-
-    .aircraft-header {
-        flex-direction: column;
-        gap: 0.75rem;
-        align-items: stretch;
-    }
-
-    .card-header {
-        flex-direction: column;
-        gap: 0.75rem;
-        align-items: stretch;
-    }
-
-    .card-title {
-        justify-content: space-between;
-    }
-
-    .card-actions {
-        width: 100%;
-    }
-
-    .card-actions .btn {
-        flex: 1;
-    }
-
-    .card-body {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .spec-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .toast {
-        right: 1rem;
-        left: 1rem;
-    }
-}
-
-
-
 /* ==========================================================================
-   Aircraft Modal Styles
+   Modal Styles (Consolidated)
    ========================================================================== */
 
-/* Modal Layout
-   ========================================================================== */
-#deleteModalOverlay {
-    width: 100% !important;
-    background: rgba(80, 14, 14, 0.5);
-}
-
-
-#modalContent {
-    width: 40% !important;
-    background: var(--surface);
-}
-.modal-overlay, .modal-overlay-del {
+/* Base Modal Overlay */
+.modal-overlay,
+.modal-overlay-del {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -490,73 +504,97 @@
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.modal-overlay.active {
-    opacity: 1;
-    visibility: visible;
+.modal-overlay {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
 }
 
-.modal-content {
-    padding: 2rem;
-    background: var(--surface);
-    border-radius: 12px;
-    max-width: 800px;
-    width: 100%;
-    max-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    transform: scale(0.9);
-    transition: transform 0.3s ease;
-}
-
-.modal-overlay.active .modal-content {
-    transform: scale(1);
-}
-
-
-/* Delete Modal Overlay */
 .modal-overlay-del {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(80, 14, 14, 0.5); /* dark red tint */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000; /* above other modals */
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2000;
 }
 
+html[data-theme="dark"] .modal-overlay {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+html[data-theme="dark"] .modal-overlay-del {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-overlay.active,
 .modal-overlay-del.active {
     opacity: 1;
     visibility: visible;
 }
 
-/* Delete Modal Content */
+/* Base Modal Content */
+.modal-content,
 .modal-content-del {
     padding: 2rem;
-    background: var(--surface);
-    border-radius: 12px;
-    max-width: 500px;  /* smaller than create/edit modal */
+    background: var(--surface) !important;
+    border-radius: var(--radius);
     width: 90%;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-lg);
     transform: scale(0.9);
     transition: transform 0.3s ease;
+    border: 1px solid var(--border);
 }
 
+.modal-content {
+    max-width: 800px;
+    max-height: 90vh;
+}
+
+.modal-content-del {
+    max-width: 500px;
+}
+
+.modal-overlay.active .modal-content,
 .modal-overlay-del.active .modal-content-del {
     transform: scale(1);
 }
 
+/* Specific Modal Overrides */
+#deleteModalOverlay {
+    width: 100% !important;
+}
 
-/* Modal Header
-   ========================================================================== */
+#modalContent {
+    width: 40%;
+    min-width: 300px;
+    max-width: 800px;
+}
+
+#modalContent .modal-content {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Delete Modal Content Specific Styles */
+.modal-content-del h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.modal-content-del p {
+    margin: 0 0 1.5rem 0;
+    color: var(--text);
+    line-height: 1.5;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-around;
+    margin-top: 1rem;
+}
+
+/* Modal Header */
 .modal-header {
     display: flex;
     justify-content: space-between;
@@ -595,16 +633,30 @@
     outline-offset: 2px;
 }
 
-/* Modal Body
-   ========================================================================== */
+/* Modal Body */
 .modal-body {
     padding: 1.5rem;
     overflow-y: auto;
     flex: 1;
 }
 
-/* Form Sections
+/* Modal Footer */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border);
+    background: var(--surface-alt);
+    border-radius: 0 0 var(--radius) var(--radius);
+    margin-top: 1rem;
+}
+
+/* ==========================================================================
+   Form Styles
    ========================================================================== */
+
+/* Form Sections */
 .form-section {
     margin-bottom: 1.5rem;
 }
@@ -631,8 +683,7 @@
     border-radius: 2px;
 }
 
-/* Form Layout
-   ========================================================================== */
+/* Form Layout */
 .form-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -650,8 +701,7 @@
     gap: 0.375rem;
 }
 
-/* Form Elements
-   ========================================================================== */
+/* Form Elements */
 .form-label {
     font-size: 0.8125rem;
     font-weight: 500;
@@ -673,7 +723,16 @@
 .form-input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(6, 60, 55, 0.1);
+    box-shadow: 0 0 0 3px rgba(80, 129, 124, 0.1);
+}
+
+html[data-theme="dark"] .form-input:focus {
+    box-shadow: 0 0 0 3px rgba(65, 100, 100, 0.2);
+}
+
+.form-input:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
 }
 
 .form-input:disabled {
@@ -686,19 +745,22 @@
     color: var(--text-light);
 }
 
-/* Form Validation
-   ========================================================================== */
+/* Form Validation */
 .form-input.error {
-    border-color: #ef4444;
+    border-color: var(--danger);
 }
 
 .form-input.error:focus {
     box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
+html[data-theme="dark"] .form-input.error:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
 .validation-error {
     font-size: 0.75rem;
-    color: #ef4444;
+    color: var(--danger);
     margin-top: 0.25rem;
     display: none;
     font-weight: 500;
@@ -708,58 +770,101 @@
     display: block;
 }
 
-/* Modal Footer
+/* ==========================================================================
+   Responsive Design
    ========================================================================== */
-.modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.75rem;
-    padding: 1rem 1.5rem;
-    border-top: 1px solid var(--border);
-    background: var(--surface-alt);
-    border-radius: 0 0 12px 12px;
-}
 
-/* Button States
-   ========================================================================== */
-.btn-secondary {
-    background: var(--surface-alt);
-    color: var(--text);
-}
-
-.btn-secondary:hover {
-    background: var(--border);
-}
-
-.btn-primary.loading {
-    position: relative;
-    color: transparent;
-}
-
-.btn-primary .spinner {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-    margin-right: 0.5rem;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Responsive Design
-   ========================================================================== */
+/* Tablet and Below (768px) */
 @media (max-width: 768px) {
+    .aircraft-container {
+        padding: 1rem;
+    }
+
+    .aircraft-header {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: stretch;
+    }
+
+    .aircraft-list-box {
+        padding: 1rem;
+    }
+
+    .aircraft-stats-container {
+        gap: 12px;
+    }
+
+    .stat-card {
+        min-width: 140px;
+        padding: 10px 14px;
+    }
+
+    .aircraft-card {
+        padding: 1rem;
+    }
+
+    .card-header {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: stretch;
+    }
+
+    .card-title {
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .registration {
+        font-size: 1.125rem;
+    }
+
+    .card-actions {
+        width: 100%;
+        justify-content: stretch;
+    }
+
+    .card-actions .btn {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .card-body {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .info-item {
+        width: 100%;
+    }
+
+    .spec-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .toast {
+        right: 1rem;
+        left: 1rem;
+    }
+
     .modal-content {
         max-width: 95%;
         max-height: 95vh;
-        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    .modal-content-del {
+        max-width: 95%;
+        width: 90%;
+        padding: 1.5rem;
+    }
+
+    #modalContent {
+        width: 90% !important;
+        max-width: 95%;
+    }
+
+    #modalContent .modal-content {
+        padding: 1.5rem;
     }
 
     .form-row {
@@ -774,6 +879,15 @@
         width: 100%;
     }
 
+    .modal-actions {
+        flex-direction: row;
+        gap: 0.75rem;
+    }
+
+    .modal-actions .btn {
+        flex: 1;
+    }
+
     .modal-body {
         padding: 1rem;
     }
@@ -783,9 +897,225 @@
     }
 }
 
+/* Mobile (480px and below) */
 @media (max-width: 480px) {
-    .modal-header h2 {
+    .aircraft-container {
+        padding: 0.75rem;
+    }
+
+    .aircraft-header {
+        gap: 1rem;
+    }
+
+    .aircraft-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .aircraft-list-box {
+        padding: 0.75rem;
+        margin-top: 1rem;
+        border-radius: var(--radius);
+    }
+
+    .aircraft-grid {
+        gap: 0.875rem;
+    }
+
+    .aircraft-card {
+        padding: 0.875rem;
+        border-radius: 8px;
+    }
+
+    .aircraft-stats-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .stat-card {
+        min-width: 100%;
+        padding: 10px 12px;
+    }
+
+    .stat-number {
         font-size: 1.25rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
+    .stat-icon {
+        padding: 6px;
+        margin-right: 10px;
+    }
+
+    .stat-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .card-header {
+        margin-bottom: 0.625rem;
+        padding-bottom: 0.625rem;
+        gap: 0.625rem;
+    }
+
+    .registration {
+        font-size: 1.125rem;
+    }
+
+    .status-badge {
+        font-size: 0.625rem;
+        padding: 0.2rem 0.5rem;
+    }
+
+    .card-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .card-actions .btn {
+        width: 100%;
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+        justify-content: center;
+    }
+
+    .card-body {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .info-item {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem;
+        background: var(--surface-alt);
+        border-radius: 6px;
+    }
+
+    .info-item:last-child {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0.5rem;
+        background: var(--surface-alt);
+        border-radius: 6px;
+    }
+
+    .info-item:last-child div {
+        flex-direction: row !important;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .info-item:last-child div .btn {
+        flex: 1;
+        max-width: 48%;
+        padding: 0.625rem 0.5rem;
+    }
+
+    .info-label {
+        font-size: 0.6875rem;
+        text-align: left;
+    }
+
+    .info-value {
+        font-size: 0.875rem;
+        text-align: right;
+    }
+
+    .card-footer {
+        margin-top: 0.625rem;
+        padding-top: 0.625rem;
+    }
+
+    .spec-details.open {
+        max-height: 500px;
+    }
+
+    .spec-content {
+        padding: 0.75rem;
+    }
+
+    .spec-grid {
+        gap: 0.5rem;
+    }
+
+    .empty-state {
+        padding: 2rem 1rem;
+    }
+
+    .empty-state svg {
+        width: 48px;
+        height: 48px;
+    }
+
+    .empty-state h3 {
+        font-size: 1rem;
+    }
+
+    .empty-state p {
+        font-size: 0.875rem;
+    }
+
+    .modal-content,
+    .modal-content-del {
+        padding: 1.25rem;
+        border-radius: 10px;
+        width: 95%;
+        max-width: 95%;
+    }
+
+    .modal-content-del {
+        max-width: 90%;
+    }
+
+    #modalContent {
+        width: 95% !important;
+        max-width: 95%;
+    }
+
+    #modalContent .modal-content {
+        padding: 1.25rem;
+    }
+
+    .modal-content-del h3 {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .modal-content-del p {
+        font-size: 0.9375rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+        gap: 0.625rem;
+        margin-top: 1rem;
+    }
+
+    .modal-actions .btn {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 0.9375rem;
+        justify-content: center;
+    }
+
+    .modal-header h2,
+    .modal-header h3 {
+        font-size: 1.25rem;
+    }
+
+    .modal-body {
+        padding: 1rem;
+        max-height: 60vh;
+    }
+
+    .modal-footer {
+        padding: 1rem;
     }
 
     .form-label {
@@ -796,24 +1126,103 @@
         font-size: 0.875rem;
         padding: 0.5rem 0.75rem;
     }
-}
 
-/* Accessibility
-   ========================================================================== */
-.form-input:focus-visible,
-.btn:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .modal-overlay,
-    .modal-content,
-    .form-input,
     .btn {
-        transition: none;
+        padding: 0.5rem 0.875rem;
+        font-size: 0.8125rem;
+    }
+}
+
+/* Extra Small Mobile (360px and below) */
+@media (max-width: 360px) {
+    .aircraft-container {
+        padding: 0.5rem;
     }
 
+    .aircraft-header h1 {
+        font-size: 1.25rem;
+    }
+
+    .aircraft-list-box {
+        padding: 0.5rem;
+    }
+
+    .aircraft-card {
+        padding: 0.75rem;
+    }
+
+    .registration {
+        font-size: 1rem;
+    }
+
+    .stat-number {
+        font-size: 1.125rem;
+    }
+
+    .info-item {
+        padding: 0.375rem;
+    }
+
+    .btn {
+        font-size: 0.75rem;
+        padding: 0.5rem;
+    }
+
+    .info-item:last-child div .btn {
+        padding: 0.5rem 0.375rem;
+        font-size: 0.7rem;
+    }
+
+    .info-item:last-child div .btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .modal-content,
+    .modal-content-del {
+        padding: 1rem;
+        width: 98%;
+    }
+
+    #modalContent {
+        width: 98% !important;
+    }
+
+    #modalContent .modal-content {
+        padding: 1rem;
+    }
+
+    .modal-content-del h3 {
+        font-size: 1.125rem;
+    }
+
+    .modal-content-del p {
+        font-size: 0.875rem;
+    }
+
+    .modal-actions .btn {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* ==========================================================================
+   Accessibility
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+    .modal-overlay,
+    .modal-overlay-del,
+    .modal-content,
+    .modal-content-del,
+    .form-input,
+    .btn,
+    .aircraft-card,
+    .stat-card,
+    .spec-details,
+    .toggle-icon,
+    .toast {
+        transition: none;
+    }
 
     .spinner {
         animation: none;
