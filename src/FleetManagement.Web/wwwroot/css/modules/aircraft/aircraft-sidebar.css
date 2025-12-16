@@ -1,47 +1,44 @@
 /* ------------------------------------------------------------
-   AIRCRAFT SIDEBAR
+   AIRCRAFT SIDEBAR (Dynamic Theme)
 ------------------------------------------------------------- */
+
 :root {
     --sidebar-width: 380px;
-    --primary-color: #0D1F3C;
-    --primary-dark: #0A162A;
-    --accent-color: #4A90E2;
-    --sidebar-bg: #ffffff;
-    --text-primary: #121826;
-    --text-secondary: #5C6370;
-    --border-color: #D7DFE8;
-    --hover-bg: #EEF2F6;
-    --transition-speed: 0.5s;
 }
 
 .sidebar {
     position: fixed;
     left: 0;
-    top: 70px;
     height: calc(100vh - 70px);
     width: var(--sidebar-width);
-    background: var(--sidebar-bg);
-    border-right: 1px solid var(--border-color);
-    transition: transform var(--transition-speed) ease;
+
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    color: var(--text);
+
+    transition: transform var(--transition) ;
     z-index: 1000;
+
     overflow-y: auto;
     overflow-x: hidden;
     box-shadow: 2px 0 8px rgba(0,0,0,0.05);
 }
 
-.sidebar.closed { transform: translateX(-100%); }
+.sidebar.closed {
+    transform: translateX(-100%);
+}
 
 /* Sidebar Header */
 .sidebar-header {
     padding: 2rem 1.5rem;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border);
 }
 
 .logo {
     font-family: 'DM Sans', sans-serif;
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--primary);
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -51,49 +48,60 @@
     display: flex;
     align-items: center;
     padding: 0.875rem 1.5rem;
-    color: var(--text-secondary);
+    color: var(--text-light);
     text-decoration: none;
     border-radius: 8px;
-    transition: all var(0.3) ease;
+    transition: all var(--transition) ;
 }
 
-.menu-item:hover { color: var(--primary-color); background: var(--hover-bg); }
-.menu-item.active { background: var(--primary-color); color: #ffffff; }
-.menu-item.active i { color: #ffffff; }
+.menu-item:hover { 
+    color: var(--primary); 
+    background: var(--hover-bg, rgba(0,0,0,0.03)); 
+}
+
+.menu-item.active {
+    background: var(--primary);
+    color: #ffffff;
+}
+
+.menu-item.active i {
+    color: #ffffff;
+}
 
 /* Toggle Button */
 .sidebar-toggle {
     position: fixed;
     left: 20px;
-    top: 70px;
-    width: 48px;
-    height: 48px;
-    background: var(--primary-color);
+    top: 60px;
+
+    width: 28px;
+    height: 28px;
+
+    background: var(--primary);
     border: none;
     border-radius: 8px;
+
     color: white;
     font-size: 1.125rem;
     cursor: pointer;
+
     z-index: 1001;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all var(--transition-speed) ease;
+
+    transition: all var(--transition) ;
+    box-shadow: 0 4px 12px rgba(192, 173, 173, 0.3);
 }
 
-.fa-xmark, .toggle-icon {
-    padding-right: 0 !important;
-}
-
-
-/* Toggle button when sidebar is open */
 .sidebar-toggle.open {
     width: 28px;
     height: 28px;
-    background: var(--primary-dark);          /* Change color when open */
-    box-shadow: 0 4px 12px rgba(13, 31, 60, 0.3);
-    transition: all var(--transition-speed) ease;
+    left: 346px;
+    top: 63px;
+    background: var(--primary-dark);
     font-size: 0.925rem;
+    
 }
 
 .sidebar-toggle.open:active {
@@ -102,4 +110,8 @@
 
 .fa-solid {
     padding-right: 0.3rem;
+}
+
+.fa-xmark, .fa-bars {
+    padding-right: 0 !important;
 }

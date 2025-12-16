@@ -1,0 +1,15 @@
+@model IEnumerable<FleetManagement.Application.Aircrafts.DTOs.AircraftDto>
+
+@if (Model != null && Model.Any())
+{
+    <div id="aircraftList" class="aircraft-grid">
+        @foreach (var aircraft in Model)
+        {
+            <partial name="_AircraftCard" model="aircraft" />
+        }
+    </div>
+}
+else
+{
+    <partial name="_EmptyAircraftListPartial" />
+}

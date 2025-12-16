@@ -1,7 +1,9 @@
 
 
+using FleetManagement.Application.Aircrafts.Interfaces;
 using FleetManagement.Infrastructure.Data;
 using FleetManagement.Infrastructure.Data.Interceptors;
+using FleetManagement.Infrastructure.Services.Aircrafts;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         )
         .AddInterceptors(new BaseEntityInterceptor()) // <-- register interceptor here
 );
+
+
+builder.Services.AddScoped<IAircraftService, AircraftService>();
+
+
 
 var app = builder.Build();
 

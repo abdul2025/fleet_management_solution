@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using FleetManagement.Domain.Aircrafts.Entities;
 using FleetManagement.Infrastructure.Data.Interceptors;
+using FleetManagement.Application.Aircrafts.Interfaces;
 
 
 namespace FleetManagement.Infrastructure.Data
@@ -18,27 +19,7 @@ namespace FleetManagement.Infrastructure.Data
         public DbSet<Aircraft> Aircrafts { get; set; }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // Override OnConfiguring to add the interceptor, for any Model creation or modification
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // Register the interceptor
