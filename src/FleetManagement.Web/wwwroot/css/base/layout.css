@@ -37,14 +37,14 @@
 }
 
 .btn-primary {
-    background: var(--primary);
-    border-color: var(--primary);
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
     color: #fff;
 }
 
 .btn-primary:hover {
-    background: var(--primary-dark);
-    border-color: var(--primary-dark);
+    background: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
 }
 
 .btn-outline-primary {

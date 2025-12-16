@@ -133,31 +133,24 @@ namespace FleetManagement.Infrastructure.Services.Aircrafts
 
 
 
-        public async Task<IEnumerable<AircraftDto>> GetFilteredAsync(AircraftFilterDto filter)
+        public async Task<IEnumerable<AircraftDto>> SearchAsync(string query)
         {
-            IQueryable<Aircraft> query = _context.Aircrafts
-                .Include(a => a.AircraftSpecification);
+            if (string.IsNullOrWhiteSpace(query) || query.Length < 2)
+                return await GetAllAsync(); // return full list if query is too short
 
-            if (filter.Status.HasValue)
-                query = query.Where(a => a.Status == filter.Status);
+            query = query.Trim().ToLower();
 
-            if (!string.IsNullOrWhiteSpace(filter.Registration))
-                query = query.Where(a => a.RegistrationNumber.Contains(filter.Registration));
-
-            if (!string.IsNullOrWhiteSpace(filter.BasedStation))
-                query = query.Where(a => a.AircraftSpecification.BasedStation == filter.BasedStation);
-
-            if (!string.IsNullOrWhiteSpace(filter.Model))
-                query = query.Where(a => a.Model == filter.Model);
-
-            if (filter.YearFrom.HasValue)
-                query = query.Where(a => a.YearOfManufacture >= filter.YearFrom);
-
-            if (filter.YearTo.HasValue)
-                query = query.Where(a => a.YearOfManufacture <= filter.YearTo);
-
-            // Manual projection without AutoMapper
-            return await query
+            var aircrafts = await _context.Aircrafts
+                .Include(a => a.AircraftSpecification)
+                .Where(a =>
+                    a.RegistrationNumber.ToLower().Contains(query) ||
+                    a.Model.ToLower().Contains(query) ||
+                    a.SerialNumber.ToLower().Contains(query) ||
+                    a.Manufacturer.ToString().ToLower().Contains(query) ||
+                    a.Status.ToString().ToLower().Contains(query) ||
+                    (a.YearOfManufacture.HasValue && a.YearOfManufacture.Value.ToString().Contains(query)) ||
+                    (a.AircraftSpecification != null && a.AircraftSpecification.BasedStation.ToLower().Contains(query))
+                )
                 .Select(a => new AircraftDto
                 {
                     Id = a.Id,
@@ -177,7 +170,10 @@ namespace FleetManagement.Infrastructure.Services.Aircrafts
                     }
                 })
                 .ToListAsync();
+
+            return aircrafts;
         }
+
 
 
     }

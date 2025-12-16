@@ -21,21 +21,9 @@ namespace FleetManagement.Web.Controllers.Aircrafts
         }
 
         // GET: Aircraft
-        public async Task<IActionResult> Index([FromQuery] AircraftFilterDto? filter)
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<AircraftDto> aircrafts;
-
-            if (filter != null && (filter.Status.HasValue || !string.IsNullOrWhiteSpace(filter.Registration)
-                || !string.IsNullOrWhiteSpace(filter.BasedStation) || !string.IsNullOrWhiteSpace(filter.Model)
-                || filter.YearFrom.HasValue || filter.YearTo.HasValue))
-            {
-                aircrafts = await _service.GetFilteredAsync(filter);
-            }
-            else
-            {
-                aircrafts = await _service.GetAllAsync();
-            }
-
+            var aircrafts = await _service.GetAllAsync();
             return View(aircrafts);
         }
 
@@ -115,18 +103,13 @@ namespace FleetManagement.Web.Controllers.Aircrafts
 
 
 
-        public async Task<IActionResult> AircraftListPartial([FromQuery] AircraftFilterDto? filter)
+        public async Task<IActionResult> AircraftListPartial()
         {
-            IEnumerable<AircraftDto> aircrafts;
-
-            if (filter != null)
-                aircrafts = await _service.GetFilteredAsync(filter);
-            else
-                aircrafts = await _service.GetAllAsync();
-
+            var aircrafts = await _service.GetAllAsync();
             if (!aircrafts.Any())
+            {
                 return PartialView("_EmptyAircraftListPartial");
-
+            }
             return PartialView("_AircraftListPartial", aircrafts);
         }
 
@@ -147,15 +130,32 @@ namespace FleetManagement.Web.Controllers.Aircrafts
         }
 
 
-        // TODO: this is not working correctly
-        [HttpGet]
         public async Task<IActionResult> AircraftStatsPartial()
         {
-            var aircrafts = _service.GetAllAsync();
+            var aircrafts = await _service.GetAllAsync();
             return PartialView("_AircraftStatsPartial", aircrafts);
         }
 
 
+
+
+        [HttpGet]
+        public async Task<IActionResult> Search(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query) || query.Length < 2)
+            {
+                var allAircrafts = await _service.GetAllAsync();
+                return PartialView("_AircraftListPartial", allAircrafts);
+            }
+
+            // Implement search in the service
+            var result = await _service.SearchAsync(query);
+
+            if (!result.Any())
+                return PartialView("_EmptyAircraftListPartial");
+
+            return PartialView("_AircraftListPartial", result);
+        }
 
 
 

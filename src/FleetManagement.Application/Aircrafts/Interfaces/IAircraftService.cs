@@ -8,7 +8,8 @@ namespace FleetManagement.Application.Aircrafts.Interfaces
         Task<AircraftDto> CreateAsync(AircraftDto dto);
         Task<AircraftDto?> UpdateAsync(int id, AircraftDto dto);
         Task<bool> DeleteAsync(int id);
-        Task<IEnumerable<AircraftDto>> GetFilteredAsync(AircraftFilterDto filter);
+        Task<IEnumerable<AircraftDto>> SearchAsync(string query);
+
 
     }
 }
