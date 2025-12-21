@@ -11,7 +11,7 @@ namespace FleetManagement.Application.Aircrafts.Handlers
         public void Handle(AircraftCreatedEvent @event)
         {
             // Your custom logic here
-            Console.WriteLine($"New Aircraft Created with RegistrationNumber: {@event.RegistrationNumber}");
+                    Console.WriteLine($"Aircraft {@event.RegistrationNumber} created at {@event.OccurredOn:O}");
         }
     }
 }

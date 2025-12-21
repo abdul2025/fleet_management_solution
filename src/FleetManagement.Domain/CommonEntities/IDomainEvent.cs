@@ -7,6 +7,6 @@ namespace FleetManagement.Domain.CommonEntities
 {
     public interface IDomainEvent
     {
-        
+        DateTime OccurredOn { get; }
     }
 }
