@@ -351,12 +351,12 @@
     display: inline-block;
     font-size: 0.7rem;
     font-weight: 600;
-    padding: 2px 6px;
-    border-radius: 6px;
+    padding: 0.5px 9px;
+    border-radius: 3px;
     background: var(--surface-alt);
     color: var(--text-light);
     letter-spacing: 0.5px;
-    border: 1px solid var(--border);
+    border: 0.5px solid var(--border);
 }
 
 .info-value {

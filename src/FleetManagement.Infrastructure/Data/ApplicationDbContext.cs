@@ -4,6 +4,7 @@ using System.Reflection;
 using FleetManagement.Domain.Aircrafts.Entities;
 using FleetManagement.Infrastructure.Data.Interceptors;
 using FleetManagement.Application.Aircrafts.Interfaces;
+using FleetManagement.Domain.CommonEntities;
 
 
 namespace FleetManagement.Infrastructure.Data
@@ -14,6 +15,9 @@ namespace FleetManagement.Infrastructure.Data
             : base(options)
         {
         }
+
+        private readonly DomainEventDispatcher _dispatcher = new DomainEventDispatcher();
+
 
         // DbSets
         public DbSet<Aircraft> Aircrafts { get; set; }
@@ -34,6 +38,41 @@ namespace FleetManagement.Infrastructure.Data
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
             
             base.OnModelCreating(modelBuilder);
+        }
+
+
+
+        public override int SaveChanges()
+        {
+            // Find entities with domain events
+            var entitiesWithEvents = ChangeTracker.Entries<BaseEntity>()
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
+                .Select(e => e.Entity)
+                .Where(e => e.DomainEvents.Any())
+                .ToList();
+
+            var result = base.SaveChanges();
+
+            // Dispatch domain events after saving
+            _dispatcher.DispatchAll(entitiesWithEvents);
+
+            return result;
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entitiesWithEvents = ChangeTracker.Entries<BaseEntity>()
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
+                .Select(e => e.Entity)
+                .Where(e => e.DomainEvents.Any())
+                .ToList();
+
+            var result = await base.SaveChangesAsync(cancellationToken);
+
+            // Dispatch domain events after saving
+            _dispatcher.DispatchAll(entitiesWithEvents);
+
+            return result;
         }
 
         

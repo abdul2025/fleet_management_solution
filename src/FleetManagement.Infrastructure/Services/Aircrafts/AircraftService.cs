@@ -70,28 +70,25 @@ namespace FleetManagement.Infrastructure.Services.Aircrafts
 
         public async Task<AircraftDto> CreateAsync(AircraftDto dto)
         {
-            var aircraft = new Aircraft
+            // Use factory method for core properties
+            var aircraft = Aircraft.Create(dto.RegistrationNumber, dto.Model, dto.Manufacturer, dto.Status);
+
+            // Set optional/additional properties
+            aircraft.SerialNumber = dto.SerialNumber;
+            aircraft.YearOfManufacture = dto.YearOfManufacture;
+            aircraft.AircraftSpecification = new AircraftSpecification
             {
-                RegistrationNumber = dto.RegistrationNumber,
-                SerialNumber = dto.SerialNumber,
-                Model = dto.Model,
-                Manufacturer = dto.Manufacturer,
-                YearOfManufacture = dto.YearOfManufacture,
-                Status = dto.Status,
-                AircraftSpecification = new AircraftSpecification
-                {
-                    BasedStation = dto.Specification.BasedStation,
-                    SeatingCapacity = dto.Specification.SeatingCapacity,
-                    MaxTakeoffWeight = dto.Specification.MaxTakeoffWeight,
-                    MaxLandingWeight = dto.Specification.MaxLandingWeight,
-                    WeightUnit = dto.Specification.WeightUnit
-                }
+                BasedStation = dto.Specification.BasedStation,
+                SeatingCapacity = dto.Specification.SeatingCapacity,
+                MaxTakeoffWeight = dto.Specification.MaxTakeoffWeight,
+                MaxLandingWeight = dto.Specification.MaxLandingWeight,
+                WeightUnit = dto.Specification.WeightUnit
             };
 
             _context.Aircrafts.Add(aircraft);
             await _context.SaveChangesAsync();
 
-            dto.Id = aircraft.Id; // DB-generated ID
+            dto.Id = aircraft.Id;
             return dto;
         }
 
