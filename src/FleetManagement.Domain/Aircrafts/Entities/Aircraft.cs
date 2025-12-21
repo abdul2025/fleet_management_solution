@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using FleetManagement.Domain.Aircrafts.Events;
 using FleetManagement.Domain.CommonEntities;
 using FleetManagement.Shared.Enums;
 
@@ -6,6 +7,27 @@ namespace FleetManagement.Domain.Aircrafts.Entities
 {
     public class Aircraft : BaseEntity
     {
+        // Parameterless constructor required by EF Core
+        protected Aircraft() { }
+
+        // Factory method for creating new Aircraft
+        public static Aircraft Create(string registrationNumber, string model, AircraftManufacturers manufacturer, AircraftStatus status)
+        {
+            var aircraft = new Aircraft
+            {
+                RegistrationNumber = registrationNumber,
+                Model = model,
+                Manufacturer = manufacturer,
+                Status = status,
+            };
+
+            // Trigger domain event for new creation
+            aircraft.AddDomainEvent(new AircraftCreatedEvent(aircraft.RegistrationNumber));
+
+            return aircraft;
+        }
+
+
         [Required, StringLength(12)]
         public required string RegistrationNumber { get; set; }
 
