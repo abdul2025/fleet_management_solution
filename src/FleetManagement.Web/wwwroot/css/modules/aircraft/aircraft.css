@@ -179,7 +179,6 @@
 
 .btn-delete,
 .btn-danger {
-    background: var(--danger);
     color: var(--danger) !important;
 }
 
@@ -365,24 +364,24 @@
     font-weight: 500;
 }
 
-/* Buttons Container - ALWAYS horizontal on all screens */
 .info-item:last-child {
     width: 100%;
+    display: flex;
+    justify-content: center; /* center the buttons horizontally */
 }
 
 .info-item:last-child div {
     display: flex;
-    flex-direction: row !important;
-    gap: 0.5rem;
-    justify-content: center;
-    width: 100%;
-    flex-wrap: nowrap;
+    flex-direction: row;
+    gap: 0.5rem; /* distance between buttons */
+    justify-content: center; /* center buttons in the div */
+    flex-wrap: nowrap; /* no wrapping */
 }
 
 .info-item:last-child div .btn {
-    min-width: 100px;
-    flex: 1;
-    max-width: 200px;
+    min-width: auto;   /* remove forced min width */
+    flex: none;        /* prevent stretching */
+    max-width: 120px;  /* optional: control maximum size */
 }
 
 /* Card Footer */
@@ -870,6 +869,53 @@ html[data-theme="dark"] .form-input.error:focus {
 .validation-error.show {
     display: block;
 }
+
+
+
+
+.upload-status {
+    margin: 1rem;
+    padding: 0.75rem;
+    border: 1px dashed var(--info);;
+    border-radius: 8px;
+    background: var(--surface-alt);
+
+}
+
+.upload-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 0.75rem;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Default drop zone styling */
+.drop-zone {
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Hover effect (mouse over) */
+.drop-zone:hover {
+    border-color: var(--border);;
+    background-color: var(--surface-alt);
+}
+
+/* Drag over effect (when user drags a file) */
+.drop-zone.drag-over {
+    border-color: var(--border);
+    background-color: var(--surface-alt);
+}
+
+
 
 /* ==========================================================================
    Responsive Design

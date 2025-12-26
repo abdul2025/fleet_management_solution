@@ -44,6 +44,9 @@ app.UseAuthorization();
 
 app.MapStaticAssets();
 
+app.MapControllers(); // 🔴 REQUIRED FOR ATTRIBUTE ROUTES
+
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")

@@ -6,6 +6,7 @@ using FleetManagement.Application.Aircrafts.Interfaces;
 using FleetManagement.Application.Aircrafts.DTOs;
 using FleetManagement.Shared.Enums;
 using FleetManagement.Shared.Enums.AircraftEnums;
+using System.Text.Json;
 
 namespace FleetManagement.Web.Controllers.Aircrafts
 {
@@ -156,6 +157,10 @@ namespace FleetManagement.Web.Controllers.Aircrafts
 
             return PartialView("_AircraftListPartial", result);
         }
+
+
+
+
 
 
 

@@ -1,12 +1,47 @@
-<div id="aircraftList" class="empty-state">
+<div id="aircraftList"
+     class="empty-state drop-zone">
+
+    <input type="file"
+           id="jsonFileInput"
+           accept=".json"
+           hidden />
+
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
     </svg>
-    <h3>No Aircraft Found</h3>
-    <p>Get started by adding your first aircraft to the fleet.</p>
-    <button onclick="openCreateModal()" class="btn btn-primary btn-new-aircraft">
+
+    <h3 id="uploadTitle">No Aircraft Found</h3>
+    <p id="uploadHint">
+        Get started by adding your first aircraft  
+        <br />
+        <small>or drag & drop a JSON file</small>
+    </p>
+
+    <!-- Upload status (hidden initially) -->
+    <div id="jsonUploadStatus" class="upload-status hidden">
+        <p>
+            <strong>File ready:</strong>
+            <span id="uploadedFileName"></span>
+        </p>
+
+        <div class="upload-actions">
+            <button id="processJsonBtn" class="btn btn-success">
+                Process File
+            </button>
+            <button id="cancelJsonBtn" class="btn btn-secondary">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <!-- ORIGINAL BUTTON (UNCHANGED) -->
+    <button onclick="openCreateModal()"
+            type="button"
+            class="btn btn-primary btn-new-aircraft">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 4v16m8-8H4"/>
         </svg>
         Add First Aircraft
     </button>

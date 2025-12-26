@@ -10,6 +10,9 @@ namespace FleetManagement.Application.Aircrafts.Interfaces
         Task<bool> DeleteAsync(int id);
         Task<IEnumerable<AircraftDto>> SearchAsync(string query);
 
+        Task<ImportResultDto> ImportFromJsonAsync(IEnumerable<AircraftDto> dtos);
+
+
 
     }
 }

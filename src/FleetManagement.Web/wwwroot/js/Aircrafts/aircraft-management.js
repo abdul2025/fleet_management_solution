@@ -20,6 +20,14 @@ async function openEditModal(id) {
     } 
 }
 
+
+
+
+
+
+
+
+
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -109,6 +117,54 @@ async function createOrUpdateAircraft(event) {
 // =======================
 // DELETE AIRCRAFT
 // =======================
+
+// =======================
+// DELETE CONFIRMATION MODAL
+// =======================
+async function showDeleteConfirmation(regNumber) {
+    try {
+        return await new Promise(resolve => {
+            const overlay = document.getElementById('deleteModalOverlay');
+            const regText = document.getElementById('deleteAircraftReg');
+            const confirmBtn = document.getElementById('confirmDeleteBtn');
+            const cancelBtn = document.getElementById('cancelDeleteBtn');
+
+            if (!overlay || !confirmBtn || !cancelBtn || !regText) {
+                console.error('Delete confirmation modal elements not found');
+                resolve(false);
+                return;
+            }
+
+            // Set aircraft registration number
+            regText.textContent = regNumber;
+
+            // Show modal
+            overlay.classList.add('active');
+
+            const cleanup = () => {
+                overlay.classList.remove('active');
+                confirmBtn.onclick = null;
+                cancelBtn.onclick = null;
+            };
+
+            confirmBtn.onclick = () => {
+                cleanup();
+                resolve(true);
+            };
+
+            cancelBtn.onclick = () => {
+                cleanup();
+                resolve(false);
+            };
+        });
+    } catch (error) {
+        console.error(error);
+        showToast('Failed to open delete confirmation', 'error');
+        return false;
+    }
+}
+
+
 async function deleteAircraft(aircraftId, regNumber) {
     if (!aircraftId) return;
 
@@ -277,3 +333,168 @@ function hideSpinner() {
     const overlay = document.getElementById('loadingSpinnerOverlay');
     if (overlay) overlay.style.display = 'none';
 }
+
+
+
+
+// =======================
+// JSON DROP & CONFIRM (FRONTEND ONLY)
+// =======================
+function initJsonDropUploader() {
+    try {
+        const dropZone = document.getElementById('aircraftList');
+        const fileInput = document.getElementById('jsonFileInput');
+
+        const title = document.getElementById('uploadTitle');
+        const hint = document.getElementById('uploadHint');
+        const status = document.getElementById('jsonUploadStatus');
+        const fileNameLabel = document.getElementById('uploadedFileName');
+        const processBtn = document.getElementById('processJsonBtn');
+        const cancelBtn = document.getElementById('cancelJsonBtn');
+
+        if (!dropZone || !fileInput) return;
+
+        let pendingFile = null;
+
+        // Open file picker on click (except buttons)
+        dropZone.addEventListener('click', e => {
+            if (e.target.closest('button')) return;
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                handleFile(fileInput.files[0]);
+            }
+        });
+
+        dropZone.addEventListener('dragover', e => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-over');
+        });
+
+        dropZone.addEventListener('drop', e => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+
+            const file = e.dataTransfer.files?.[0];
+            if (file) handleFile(file);
+        });
+
+        function handleFile(file) {
+            if (file.type !== 'application/json') {
+                showToast('Only JSON files are allowed', 'error');
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('File size exceeds 5MB', 'error');
+                return;
+            }
+
+            pendingFile = file;
+
+            // Update drop zone UI
+            title.textContent = 'JSON File Uploaded';
+            hint.textContent = 'Review and confirm before processing';
+
+            fileNameLabel.textContent =
+                `${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+
+            status.classList.remove('hidden');
+
+            // Hide the "Add First Aircraft" button
+            const addBtn = dropZone.querySelector('.btn-new-aircraft');
+            if (addBtn) addBtn.style.display = 'none';
+        }
+
+        processBtn?.addEventListener('click', async () => {
+            if (!pendingFile) {
+                showToast('No file selected', 'error');
+                return;
+            }
+
+            try {
+                showSpinner();
+
+                const formData = new FormData();
+                formData.append('file', pendingFile);
+
+                const response = await fetch('/api/aircrafts/upload-json', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const msg = await response.text();
+                    showToast(msg || 'Failed to upload file', 'error');
+                    return;
+                }
+
+                const result = await response.json();
+
+                showToast(
+                    `Import completed: ${result.successCount} aircraft created`,
+                    'success'
+                );
+
+                if (result.errors?.length) {
+                    console.warn('Import errors:', result.errors);
+                    showToast(
+                        `${result.errors.length} records failed. Check console.`,
+                        'warning'
+                    );
+                }
+
+                // Reset UI
+                pendingFile = null;
+                fileInput.value = '';
+                status.classList.add('hidden');
+
+                title.textContent = 'No Aircraft Found';
+                hint.innerHTML =
+                    `Get started by adding your first aircraft<br /><small>or drag & drop a JSON file</small>`;
+
+                // Refresh UI
+                await refreshAircraftList();
+                await refreshAircraftStats();
+
+            } catch (error) {
+                console.error(error);
+                showToast('Upload failed. Please try again.', 'error');
+            } finally {
+                hideSpinner();
+            }
+        });
+
+
+        cancelBtn?.addEventListener('click', () => {
+            pendingFile = null;
+            fileInput.value = '';
+
+            title.textContent = 'No Aircraft Found';
+            hint.innerHTML =
+                `Get started by adding your first aircraft<br /><small>or drag & drop a JSON file</small>`;
+
+            status.classList.add('hidden');
+
+            // Show the "Add First Aircraft" button again
+            const addBtn = dropZone.querySelector('.btn-new-aircraft');
+            if (addBtn) addBtn.style.display = 'inline-flex';
+        });
+
+    } catch (error) {
+        console.error(error);
+        showToast('Failed to initialize JSON uploader', 'error');
+    }
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    initJsonDropUploader();
+});
+

@@ -173,5 +173,62 @@ namespace FleetManagement.Infrastructure.Services.Aircrafts
 
 
 
+        public async Task<ImportResultDto> ImportFromJsonAsync(IEnumerable<AircraftDto> dtos)
+        {
+            var result = new ImportResultDto();
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                foreach (var dto in dtos)
+                {
+                    // Validate required fields
+                    if (string.IsNullOrWhiteSpace(dto.RegistrationNumber))
+                    {
+                        result.Errors.Add($"Missing RegistrationNumber for Model: {dto.Model}");
+                        continue;
+                    }
+
+                    // Optional: check if aircraft already exists
+                    if (await _context.Aircrafts.AnyAsync(a => a.RegistrationNumber == dto.RegistrationNumber))
+                    {
+                        result.Errors.Add($"Aircraft with RegistrationNumber {dto.RegistrationNumber} already exists.");
+                        continue;
+                    }
+
+                    // Map DTO to domain entity
+                    var aircraft = Aircraft.Create(dto.RegistrationNumber, dto.Model, dto.Manufacturer, dto.Status);
+                    aircraft.SerialNumber = dto.SerialNumber;
+                    aircraft.YearOfManufacture = dto.YearOfManufacture;
+
+                    aircraft.AircraftSpecification = new AircraftSpecification
+                    {
+                        BasedStation = dto.Specification.BasedStation,
+                        SeatingCapacity = dto.Specification.SeatingCapacity,
+                        MaxTakeoffWeight = dto.Specification.MaxTakeoffWeight,
+                        MaxLandingWeight = dto.Specification.MaxLandingWeight,
+                        WeightUnit = dto.Specification.WeightUnit
+                    };
+
+                    _context.Aircrafts.Add(aircraft);
+                    result.SuccessCount++;
+                }
+
+                if (result.SuccessCount > 0)
+                {
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                result.Errors.Add("Import failed: " + ex.Message);
+            }
+
+            return result;
+        }
+
     }
 }

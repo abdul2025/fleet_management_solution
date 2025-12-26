@@ -164,7 +164,7 @@ dotnet ef migrations add <MigrationName> \
 
 Example:
 ```bash
-dotnet ef migrations add AddAircraftTable \
+dotnet ef migrations add init \
   --project src/FleetManagement.Infrastructure \
   --startup-project src/FleetManagement.Web \
   --output-dir Data/Migrations
