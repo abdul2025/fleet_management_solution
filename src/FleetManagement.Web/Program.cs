@@ -1,65 +1,87 @@
-
-
+using FleetManagement.Application.Aircrafts.Handlers;
 using FleetManagement.Application.Aircrafts.Interfaces;
+using FleetManagement.Domain.CommonEntities;
 using FleetManagement.Infrastructure.Data;
 using FleetManagement.Infrastructure.Data.Interceptors;
 using FleetManagement.Infrastructure.Services.Aircrafts;
+using FleetManagement.Infrastructure.Services.Shared;
+using FleetManagement.Shared.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ==========================
+// Add Services to DI Container
+// ==========================
+
+// MVC Controllers + Views
 builder.Services.AddControllersWithViews();
 
+// --------------------------
+// Email Service
+// --------------------------
+builder.Services.Configure<EmailSettings>(
+    builder.Configuration.GetSection("EmailSettings")
+);
+builder.Services.AddSingleton<IEmailService, EmailService>(); // or MockEmailService for testing
 
+// --------------------------
+// Domain Event Dispatcher
+// --------------------------
+builder.Services.AddSingleton<DomainEventDispatcher>(sp =>
+    new DomainEventDispatcher(sp) // Pass IServiceProvider to resolve handlers
+);
 
-// Configure PostgreSQL Database with interceptor
+// --------------------------
+// Application Handlers
+// --------------------------
+builder.Services.AddTransient<AircraftCreatedHandler>();
+
+// --------------------------
+// Aircraft Service
+// --------------------------
+builder.Services.AddScoped<IAircraftService, AircraftService>();
+
+// --------------------------
+// DbContext with Interceptor
+// --------------------------
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
             builder.Configuration.GetConnectionString("DefaultConnection"),
             b => b.MigrationsAssembly("FleetManagement.Infrastructure")
         )
-        .AddInterceptors(new BaseEntityInterceptor()) // <-- register interceptor here
+        .AddInterceptors(new BaseEntityInterceptor())
 );
 
-
-builder.Services.AddScoped<IAircraftService, AircraftService>();
-
-
-
+// ==========================
+// Build App
+// ==========================
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// ==========================
+// Middleware Pipeline
+// ==========================
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
 app.UseAuthorization();
 
-app.MapStaticAssets();
-
-app.MapControllers(); // 🔴 REQUIRED FOR ATTRIBUTE ROUTES
-
+app.MapStaticAssets(); // If using static assets
+app.MapControllers(); // Required for attribute routing
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
-
-
-
-
-
-
-
-// Optional: Auto-apply migrations on startup (use carefully in production!)
+// ==========================
+// Apply Pending Migrations & Optional Seed Data
+// ==========================
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -67,7 +89,7 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
         
-        // Apply pending migrations automatically
+        // Apply migrations automatically
         if (context.Database.GetPendingMigrations().Any())
         {
             context.Database.Migrate();
@@ -83,7 +105,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-
-
-
+// ==========================
+// Run the App
+// ==========================
 app.Run();
