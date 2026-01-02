@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using FleetManagement.Web.Models;
 using FleetManagement.Application.Aircrafts.Interfaces;
 using FleetManagement.Application.Aircrafts.DTOs;
-using FleetManagement.Shared.Enums;
-using FleetManagement.Shared.Enums.AircraftEnums;
-using System.Text.Json;
+using FleetManagement.Domain.Enums;
 
 namespace FleetManagement.Web.Controllers.Aircrafts
 {

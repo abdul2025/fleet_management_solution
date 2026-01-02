@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using FleetManagement.Domain.Aircrafts.Events;
 using FleetManagement.Domain.CommonEntities;
-using FleetManagement.Shared.Enums;
+using FleetManagement.Domain.Enums;
 
 namespace FleetManagement.Domain.Aircrafts.Entities
 {

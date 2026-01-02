@@ -336,10 +336,6 @@ function hideSpinner() {
 
 
 
-
-// =======================
-// JSON DROP & CONFIRM (FRONTEND ONLY)
-// =======================
 function initJsonDropUploader() {
     try {
         const dropZone = document.getElementById('aircraftList');
@@ -356,18 +352,36 @@ function initJsonDropUploader() {
 
         let pendingFile = null;
 
-        // Open file picker on click (except buttons)
+        // ========================
+        // Prevent default drag/drop on the whole document
+        // ========================
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            document.addEventListener(eventName, e => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        });
+
+        // ========================
+        // Drop zone click
+        // ========================
         dropZone.addEventListener('click', e => {
             if (e.target.closest('button')) return;
             fileInput.click();
         });
 
+        // ========================
+        // File input change
+        // ========================
         fileInput.addEventListener('change', () => {
             if (fileInput.files.length > 0) {
                 handleFile(fileInput.files[0]);
             }
         });
 
+        // ========================
+        // Drag over / drag leave
+        // ========================
         dropZone.addEventListener('dragover', e => {
             e.preventDefault();
             dropZone.classList.add('drag-over');
@@ -377,16 +391,25 @@ function initJsonDropUploader() {
             dropZone.classList.remove('drag-over');
         });
 
+        // ========================
+        // Drop handler
+        // ========================
         dropZone.addEventListener('drop', e => {
             e.preventDefault();
+            e.stopPropagation(); // <- important
             dropZone.classList.remove('drag-over');
 
             const file = e.dataTransfer.files?.[0];
-            if (file) handleFile(file);
+            if (!file) return;
+
+            handleFile(file);
         });
 
+        // ========================
+        // Handle file
+        // ========================
         function handleFile(file) {
-            if (file.type !== 'application/json') {
+            if (file.type !== 'application/json' && !file.name.endsWith('.json')) {
                 showToast('Only JSON files are allowed', 'error');
                 return;
             }
@@ -398,7 +421,6 @@ function initJsonDropUploader() {
 
             pendingFile = file;
 
-            // Update drop zone UI
             title.textContent = 'JSON File Uploaded';
             hint.textContent = 'Review and confirm before processing';
 
@@ -412,6 +434,9 @@ function initJsonDropUploader() {
             if (addBtn) addBtn.style.display = 'none';
         }
 
+        // ========================
+        // Process file
+        // ========================
         processBtn?.addEventListener('click', async () => {
             if (!pendingFile) {
                 showToast('No file selected', 'error');
@@ -451,13 +476,7 @@ function initJsonDropUploader() {
                 }
 
                 // Reset UI
-                pendingFile = null;
-                fileInput.value = '';
-                status.classList.add('hidden');
-
-                title.textContent = 'No Aircraft Found';
-                hint.innerHTML =
-                    `Get started by adding your first aircraft<br /><small>or drag & drop a JSON file</small>`;
+                resetUploader();
 
                 // Refresh UI
                 await refreshAircraftList();
@@ -471,8 +490,12 @@ function initJsonDropUploader() {
             }
         });
 
+        // ========================
+        // Cancel file
+        // ========================
+        cancelBtn?.addEventListener('click', resetUploader);
 
-        cancelBtn?.addEventListener('click', () => {
+        function resetUploader() {
             pendingFile = null;
             fileInput.value = '';
 
@@ -482,10 +505,9 @@ function initJsonDropUploader() {
 
             status.classList.add('hidden');
 
-            // Show the "Add First Aircraft" button again
             const addBtn = dropZone.querySelector('.btn-new-aircraft');
             if (addBtn) addBtn.style.display = 'inline-flex';
-        });
+        }
 
     } catch (error) {
         console.error(error);
@@ -493,8 +515,6 @@ function initJsonDropUploader() {
     }
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
     initJsonDropUploader();
 });
-

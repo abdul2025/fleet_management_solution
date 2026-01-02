@@ -1,4 +1,4 @@
-namespace FleetManagement.Shared.Enums
+namespace FleetManagement.Domain.Enums
 {
     public enum AircraftManufacturers
     {

@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\FleetManagement.Shared\FleetManagement.Shared.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

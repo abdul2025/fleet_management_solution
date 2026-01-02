@@ -1,5 +1,5 @@
 @model IEnumerable<FleetManagement.Application.Aircrafts.DTOs.AircraftDto>
-@using FleetManagement.Shared.Enums
+@using FleetManagement.Domain.Enums
 
 <div class="aircraft-stats-container">
     <!-- Active -->
@@ -40,7 +40,11 @@
             </svg>
         </div>
         <div class="stat-info">
-            <span class="stat-number">@Model.Count(a => a.Specification.BasedStation?.Equals("Jeddah", StringComparison.OrdinalIgnoreCase) == true)</span>
+            <span class="stat-number">@Model.Count(a =>
+                !string.IsNullOrEmpty(a.Specification.BasedStation) &&
+                (a.Specification.BasedStation.Equals("Jeddah", StringComparison.OrdinalIgnoreCase) ||
+                a.Specification.BasedStation.Equals("JED", StringComparison.OrdinalIgnoreCase))
+            )</span>
             <span class="stat-label">Based in Jeddah</span>
         </div>
     </div>

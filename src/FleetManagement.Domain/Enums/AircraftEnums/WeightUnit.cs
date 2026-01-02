@@ -1,4 +1,4 @@
-namespace FleetManagement.Shared.Enums.AircraftEnums
+namespace FleetManagement.Domain.Enums
 {
     public enum WeightUnit
     {

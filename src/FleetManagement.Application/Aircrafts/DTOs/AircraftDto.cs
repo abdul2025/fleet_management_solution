@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FleetManagement.Shared.Enums;
-
+using FleetManagement.Domain.Enums;
 namespace FleetManagement.Application.Aircrafts.DTOs
 {
 

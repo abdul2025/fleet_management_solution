@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using FleetManagement.Shared.Enums.AircraftEnums;
+using FleetManagement.Domain.Enums;
 
 namespace FleetManagement.Domain.Aircrafts.Entities
 {

@@ -28,7 +28,7 @@ namespace FleetManagement.Application.Aircrafts.Handlers
             var subject = $"New Aircraft Created: {@event.RegistrationNumber}";
             var body = $"Aircraft {@event.RegistrationNumber} was created on {@event.OccurredOn:O}";
 
-            await _emailService.SendEmailAsync("abdul.2020alsh@gmail.com", subject, body);
+            // await _emailService.SendEmailAsync("abdul.2020alsh@gmail.com", subject, body);
 
         }
     }

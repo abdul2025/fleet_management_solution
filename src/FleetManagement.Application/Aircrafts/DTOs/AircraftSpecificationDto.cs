@@ -1,4 +1,5 @@
-using FleetManagement.Shared.Enums.AircraftEnums;
+using FleetManagement.Domain.Enums;
+
 
 namespace FleetManagement.Application.Aircrafts.DTOs
 {
