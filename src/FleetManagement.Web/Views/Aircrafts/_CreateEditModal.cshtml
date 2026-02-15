@@ -107,13 +107,18 @@
         </div>
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-action="close-modal">Cancel</button>
-            <button type="submit" class="btn btn-primary" id="submitBtn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
-                <span class="btn-primary">@(Model.Id == 0 ? "Create Aircraft" : "Save Changes")</span>
+            <button type="button"
+                    class="btn btn-secondary"
+                    data-action="close-modal">
+                Cancel
+            </button>
+
+            <button type="submit"
+                    class="btn btn-primary"
+                    id="submitBtn">
+                @(Model.Id == 0 ? "Create Aircraft" : "Save Changes")
             </button>
         </div>
+
     </form>
 </div>

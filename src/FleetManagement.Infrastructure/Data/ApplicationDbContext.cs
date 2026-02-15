@@ -34,7 +34,19 @@ namespace FleetManagement.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+
+            foreach (var entity in modelBuilder.Model.GetEntityTypes())
+            {
+                Console.WriteLine($"ENTITY: {entity.ClrType.FullName}");
+
+                foreach (var prop in entity.ClrType.GetProperties())
+                {
+                    Console.WriteLine($"   PROPERTY: {prop.Name} - {prop.PropertyType}");
+                }
+            }
             base.OnModelCreating(modelBuilder);
+
         }
 
         public override int SaveChanges()

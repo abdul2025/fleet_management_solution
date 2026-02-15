@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using FleetManagement.Domain.Aircrafts.Events;
 using FleetManagement.Domain.CommonEntities;
+using FleetManagement.Domain.Components.Entities;
 using FleetManagement.Domain.Enums;
+using FleetManagement.Domain.Maintenance.Entities;
 
 namespace FleetManagement.Domain.Aircrafts.Entities
 {
@@ -47,5 +49,11 @@ namespace FleetManagement.Domain.Aircrafts.Entities
         public AircraftStatus Status { get; set; }
 
         public AircraftSpecification AircraftSpecification { get; set; } = null!;
+
+         // Navigation property for Component
+        public ICollection<AircraftComponent> Component { get; set; } = new List<AircraftComponent>();
+
+        // Navigation property for MaintenanceEvents
+        public ICollection<MaintenanceEvent> MaintenanceEvents { get; set; } = new List<MaintenanceEvent>();
     }
 }
